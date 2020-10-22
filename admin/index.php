@@ -26,6 +26,12 @@
 	
 	    <!-- Custom styles for this template -->
 		<link href="https://getbootstrap.com/docs/4.0/examples/checkout/form-validation.css" rel="stylesheet">
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<style type="text/css">
+			tr:nth-child(even) {background: #CCC}
+			tr:nth-child(odd) {background: #FFF}
+		</style>
+
 	</head>
 
   	<body class="is-preload">
@@ -54,6 +60,12 @@
 							</ul>
 						</li>
 						<li>
+							<a href="#"><i class="fa fa-gear"> Ρυθμίσεις</i></a>
+							<ul>
+								<li><a href="?p=TimeslotSettings">Ημέρες και Ώρες Ραντεβού</a></li>
+							</ul>
+						</li>
+						<li>
 						<?php 
 							if($_SESSION['admin'] == 'ok'){
 								print '<a href="?p=logout">Logout</a>';
@@ -67,7 +79,7 @@
 			</div>
 			
 			<!-- Internal Pages -->
-			<main role="main" style="padding-top:5%;margin-right:10%;;margin-left:10%" class="col-md-9 col-lg-10 px-4" id="main">
+			<main role="main" style="padding-top:5%;margin-right:10%;margin-left:10%" class="col-md-9 col-lg-10 px-4" id="main">
 	          	<section class="row text-center placeholders">
 	           		<?php	
 						if( !isset($_REQUEST['p']) && $_SESSION['admin'] == 'ok' ){
@@ -121,6 +133,10 @@
 															break;
 								case "Request" :			require "services/request.php";
 															break;
+								case "TimeslotSettings" :	require "settings/timeslotSettings.php";
+															break;
+								case "UpdateSettings" :		require "settings/UpdateSettings.php";
+															break;
 								
 							}
 						}
@@ -130,7 +146,7 @@
   		</div>
   		
 			<!-- Scripts -->
-		<script src="../assets/js/jquery.min.js"></script>
+		<!--<script src="../assets/js/jquery.min.js"></script>-->
 		<script src="../assets/js/jquery.dropotron.min.js"></script>
 		<script src="../assets/js/browser.min.js"></script>
 		<script src="../assets/js/breakpoints.min.js"></script>
