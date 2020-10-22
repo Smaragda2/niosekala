@@ -1,10 +1,10 @@
 <div class="container row" style="width:100%;">
-	
+<!---	
 	<div class="jumbotron alert" style="font-family:'Calibri Light';font-size:xx-large;background:red;width:100%;color:black">
 		Η σελίδα είναι υπό κατασκευή , θα είναι σύντομα διαθέσιμη με όλες τις δικλείδες ασφαλείας ενεργοποιημές ! Ευχαριστώ.
 		<br><a href="https://fb.com/book/niosekala/" target="_blank" style="color:white">Εάν επιθυμείτε, μπορείτε να κλείσετε Ραντεβού μέσω της Σελίδας μας στο Facebook.</a>
 	</div>
-	
+-->
 	<div class="jumbotron alert" style="font-family:'Calibri Light';font-size:x-large;background:yellow;width:100%;color:black">
 		<a href="?p=Oroi">Παρακαλώ πριν από οποιαδήποτε ενέργεια διαβάστε πρώτα τους Όρους Χρήσης.</a>
 	</div>
