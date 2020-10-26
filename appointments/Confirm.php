@@ -113,16 +113,16 @@ END;
 		    "MerchantTrns"=> "Niose Kala",
 		   	"disableCash"=> true,
 		   	"disablePayAtHome"=> true,
-		   	"sourceCode"=>$sourceCode ,
+		   	"sourceCode"=>$sourceCodeLive ,
 		    "CustomerTrns"=> $productName,
 		    "disableIVR"=> true
 		);	
 		$headers = array(
 		    'Content-Type:application/json',
-		    'Authorization: Basic '.$encAuth // <---
+		    'Authorization: Basic '.$encAuthLive // <---
 		);
 		
-		$ch = curl_init($host);
+		$ch = curl_init($hostLive);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -133,7 +133,7 @@ END;
 		$result =json_decode($return);
 		$orderCode = $result->OrderCode;
 		
-		return $demoURL.$orderCode;
+		return $liveURL.$orderCode;
 
 	}
 
