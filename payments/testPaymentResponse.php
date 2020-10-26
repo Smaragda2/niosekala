@@ -40,10 +40,10 @@
 
 		$headers = array(
 		    'Content-Type:application/json',
-		    'Authorization: Basic '.$encAuth  // <---
+		    'Authorization: Basic '.$encAuthLive  // <---
 		);
 	
-		$ch = curl_init($host);
+		$ch = curl_init($hostLive);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		
@@ -157,12 +157,12 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
-		$mail->SetFrom(GUSER, 'Niose Kala');
+		$mail->Username = GMAILUSER;  
+		$mail->Password = GMAILPASSWORD;           
+		$mail->SetFrom(GMAILUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($message);
-		$mail->AddAddress(GUSER);
+		$mail->AddAddress(GMAILUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			echo $error;
@@ -184,12 +184,12 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
-		$mail->SetFrom(GUSER, 'Niose Kala');
+		$mail->Username = GMAILUSER;  
+		$mail->Password = GMAILPASSWORD;           
+		$mail->SetFrom(GMAILUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($body);
-		$mail->AddAddress(GUSER);
+		$mail->AddAddress(GMAILUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			echo $error;
