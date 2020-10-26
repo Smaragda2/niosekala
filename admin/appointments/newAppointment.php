@@ -1,4 +1,33 @@
+<?php 
+	$responseDT = getDatesAndTimes();
+	$_SESSION['dateTimes']= $responseDT;
+?>
 <script>
+
+	function displayTimesOfDate(){
+		var e= document.getElementById("onDate");
+		var x= e.options[e.selectedIndex].value; 
+		var dateTimes = JSON.parse('<?php echo json_encode($_SESSION["dateTimes"]); ?>');
+
+		var timesSelect = '';
+		
+		$('#atTime').children().remove();
+		var select =document.getElementById('atTime');
+		
+		for(dateTime in dateTimes){
+		    if(dateTime == x){
+		    	for(time in dateTimes[dateTime]){
+		    		var timeOpt= dateTimes[dateTime][time];
+		    		
+		    		var opt = document.createElement('option');
+		    		opt.value = timeOpt;
+    				opt.innerHTML = timeOpt;
+    				select.appendChild(opt);
+   		    	}
+		    }
+		}		
+	}
+	
 	var telNotRequired = "Τηλέφωνο Επικοινωνίας:";
 	var telRequired = "*Τηλέφωνο Επικοινωνίας:";
 	
@@ -6,12 +35,13 @@
 		var allRequired = true;
 		
 		var fullName = new RegExp("^.{3,} .{3,}$");
-		var date = new RegExp("^[0-9]{2}-[0-9]{2}-[0-9]{4} [0-9]{2}:[0-9]{2}$");
 		var email = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$");
 		
+		var selectedDateValue = $('#onDate').val();
+		var selectedTimeValue = $('#atTime').val();
+
 		
-		
-		if( fullName.test($("#fullName").val()) && date.test($("#date").val()) && email.test($("#email").val()) ){
+		if( fullName.test($("#fullName").val()) && email.test($("#email").val()) && selectedDateValue && selectedTimeValue){
 	        allRequired = true;
 		}else{
 	        allRequired = false;
@@ -86,9 +116,13 @@ END;
 				<div class="invalid-feedback">Παρακαλώ συμπληρώστε το Ονοματεπώνυμο.</div>
 			</div>
 			<div class="col-md-5 mb-3">
-			    <label for="date">*Επιθυμητή Ημ/νια και Ώρα Ραντεβού:</label>
-			    <input type="text" class="form-control" id="date" name="date" placeholder="DD-MM-YYYY HH:MM" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} [0-9]{2}:[0-9]{2}" title="Enter a date in this formart DD-MM-YYYY HH:MM" onkeyup="CheckRequired();" required>
-				<div class="invalid-feedback">Παρακαλώ συμπληρώστε την Ημ/νια και Ώρα όπως το παράδειγμα: 12-05-2020 17:30.</div>
+				<label for="onDate">*Επιθυμητή Ημερομηνία Ραντεβού:</label>
+				<select class="custom-select d-block" id="onDate" name="onDate" onchange="CheckRequired();displayTimesOfDate();" style="width:50%">
+END;
+				print displayDatesTimes().'</select>';
+				print '<label for="atTime">*Επιθυμητή Ώρα Ραντεβού:</label><select class="custom-select d-block" id="atTime" name="atTime" onchange="CheckRequired();" style="width:50%"><script>displayTimesOfDate();</script></select>';
+				
+	print<<<END
 			</div>
 		</div>
 		<div class="row">
@@ -129,6 +163,37 @@ END;
 		<input type="submit" id="requestSubmit" name="RequestAppointment"  value="Δημιουργία Ραντεβού" style="background-color:gray" disabled/>
 		
 END;
+	function displayDatesTimes(){
+		$dateTimes = $_SESSION['dateTimes'];
+		$datesSelect = '';
+		$i = 0;
+		$firstDate = '';
+		foreach($dateTimes as $date=>$values){
+			if($i == 0){
+				$firstDate = $date;
+				$i++;
+			}
+			$datesSelect .= '<option value="'.$date.'">'.$date.'</option>';
+		}
+		return $datesSelect;
+	}
+	
+	
+	function getDatesAndTimes(){
+		$curl = curl_init();        
+		curl_setopt ($curl, CURLOPT_URL, 'https://niosekala.gr/_aDemo/services/getDatesAndTimeslots.php');   
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
+		curl_setopt($curl, CURLOPT_HTTPGET, 1);  
+		$result = curl_exec($curl); 
+		if($result == FALSE){
+			die("cUrl Error: ". curl_error($curl));
+		} 
+		$resObj = json_decode($result, true);
+
+		curl_close($curl);
+		return $resObj ; 
+	}
+
 ?>
 
 </form>

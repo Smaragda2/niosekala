@@ -2,44 +2,55 @@
 
 	if(isset($_POST['RequestAppointment'])){
 		$mysqli = $_SESSION['dbconnect'];
-		$insertFullRequest = "INSERT INTO `Request`(`name`, `hours`, `email`, createdAt, `tel`, `whereTo`, `skypeName`, `notes`, isCompleted, isCancelled, isConfirmed, isPaid, `selectedProductID`,paymentToken) VALUES (?,?,?,?,?,?,?,?,false,false,true,false,?,?)";
-		$insertTelRequest = "INSERT INTO `Request`(`name`, `hours`, `email`, createdAt, `tel`, `whereTo`, `notes`, isCompleted, isCancelled, isConfirmed, isPaid, `selectedProductID`,paymentToken) VALUES (?,?,?,?,?,?,?,false,false,true,false,?,?)";
 		
-		$send = false;
-
 		date_default_timezone_set('Europe/Athens');
 		$datum = new DateTime();
 		$startTime = $datum->format('Y-m-d H:i:s');
 		
-		
-		$hour = $_POST['date'];
+		$onDate = $_POST['onDate'];
+		$atTime = $_POST['atTime'];
 		$email = $_POST['email'];
+
+		$hour = $onDate.' '.$atTime;
+		$createdAt = $startTime;
+		
+		$insertFullRequest = "INSERT INTO `Request`(`name`, `email`, createdAt, `tel`, `whereTo`, `skypeName`, `notes`, isCompleted, isCancelled, isConfirmed, isPaid, `selectedProductID`,paymentToken, onDate, atTime) VALUES (?,?,?,?,?,?,?,false,false,false,false,?,?,?,?)";
+		$insertTelRequest = "INSERT INTO `Request`(`name`,  `email`, createdAt, `tel`, `whereTo`, `notes`, isCompleted, isCancelled, isConfirmed, isPaid, `selectedProductID`,paymentToken, onDate, atTime) VALUES (?,?,?,?,?,?,false,false,false,false,?,?,?,?)";
+
+		$formattedOnDate = date('Y-m-d',strtotime($onDate));
+		$insertBooked = "INSERT INTO `Booked`(`createdAt`,`onDate`, `atTime`) VALUES ('".$createdAt."','".$formattedOnDate."','".$atTime."')";
+				
+		$send = false;
+
 
 		$createdAt = $startTime;
 		
 		$tokenStr = $email.','.$hour.','.$createdAt;
 		$token = sha1($tokenStr);
 
-
+		$bookedStmt = $mysqli->prepare($insertBooked); 
+		if(!$bookedStmt->execute())
+			print $bookedStmt->error;
+			
 		if($_POST['whereTo'] == "Skype"){
 
 			$stmt = $mysqli->prepare($insertFullRequest);
-			$stmt->bind_param("ssssssssis", $_POST['fullName'], $_POST['date'], $_POST['email'], $startTime, $_POST['tel'], $_POST['whereTo'], $_POST['SkypeName'], $_POST['notes'], $_POST['id'],$token);
+			$stmt->bind_param("sssssssisss", $_POST['fullName'], $_POST['email'], $startTime, $_POST['tel'], $_POST['whereTo'], $_POST['SkypeName'], $_POST['notes'], $_POST['id'],$token, $formattedOnDate, $atTime);
 			
 			if($stmt->execute())
 				$send = true;
-			else
+			else{
 				$send = false;
+			}
 
 		}else{
 			$stmt = $mysqli->prepare($insertTelRequest);
-			$stmt->bind_param("sssssssis", $_POST['fullName'], $_POST['date'], $_POST['email'], $startTime, $_POST['tel'], $_POST['whereTo'], $_POST['notes'], $_POST['id'],$token);
+			$stmt->bind_param("ssssssisss", $_POST['fullName'], $_POST['email'], $startTime, $_POST['tel'], $_POST['whereTo'], $_POST['notes'], $_POST['id'],$token, $formattedOnDate, $atTime);
 
 			if($stmt->execute())
 				$send = true;
 			else
 				$send = false;
-
 		}
 
 		$getPaymentInfoByPaymentToken = 'SELECT COUNT(*) as exist FROM `paymentInfo` WHERE paymentToken = "'.$token.'"';	
@@ -87,8 +98,14 @@ END;
 	}	
 
 	function smtpmailer($email,$subject,$message) { 
-		define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-		define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
+		if($slittedURI[1]=="_aDemo"){
+			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
+			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+		}else{
+			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
+			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
+		}
 
 		require_once('../appointments/mailer/class.phpmailer.php');
 		
@@ -117,16 +134,22 @@ END;
 	}
 
 	function getUrl($price,$name,$token){
-	//----- DEMO -----
-		$host = "https://demo.vivapayments.com/api/orders";
-		$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
-		$sourceCode = "6726";
-		
-	//----- LIVE -----
-		$hostLive = "https://www.vivapayments.com/api/orders";
-		$encAuthLive = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
-		$sourceCodeLive = "3441";
-		
+	
+		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
+		if($slittedURI[1]=="_aDemo"){
+		//----- DEMO -----
+			$host = "https://demo.vivapayments.com/api/orders";
+			$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
+			$sourceCode = "9539";
+			$refURL= "https://demo.vivapayments.com/web/checkout?ref=";
+		}else{
+		//----- LIVE -----
+			$host = "https://www.vivapayments.com/api/orders";
+			$encAuth = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
+			$sourceCode = "3441";
+			$refURL = "https://www.vivapayments.com/web/checkout?ref=";
+		}
+
 		$return = "";
 	    
 	    $price = $price*100;
@@ -143,16 +166,16 @@ END;
 		    "MerchantTrns"=> "Niose Kala",
 		   	"disableCash"=> true,
 		   	"disablePayAtHome"=> true,
-		   	"sourceCode"=>$sourceCodeLive,
+		   	"sourceCode"=>$sourceCode,
 		    "CustomerTrns"=> $productName,
 		    "disableIVR"=> true
 		);	
 		$headers = array(
 		    'Content-Type:application/json',
-		    'Authorization: Basic '.$encAuthLive // <---
+		    'Authorization: Basic '.$encAuth // <---
 		);
 		
-		$ch = curl_init($hostLive);
+		$ch = curl_init($host);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -163,7 +186,7 @@ END;
 		$result =json_decode($return);
 		$orderCode = $result->OrderCode;
 		
-		return "https://www.vivapayments.com/web/checkout?ref=".$orderCode;
+		return $refURL.$orderCode;
 
 	}
 

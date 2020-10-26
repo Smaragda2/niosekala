@@ -111,17 +111,13 @@ END;
 		
 		$send = true;
 						
-		$formattedNewDate = date('Y-m-d',strtotime($newDate));
-		$formattedOnDate = date('Y-m-d',strtotime($onDate));
-		
+		$formattedNewDate = date('d-m-Y',strtotime($newDate));
 		$updateConfirm = 'UPDATE Request SET onDate="'.$formattedNewDate.'",atTime = "'.$newTime.'", isConfirmed=true WHERE paymentToken="'.$token.'"';
-		$updateBooked = 'UPDATE Booked SET onDate="'.$formattedNewDate.'",atTime = "'.$newTime.'" WHERE onDate="'.$formattedOnDate.'" AND atTime="'.$atTime.'"';
 		
 		$stmt = $mysqli->prepare($updateConfirm);
-		$stmt2 = $mysqli->prepare($updateBooked);
 		if($send){
-			if($stmt->execute() && $stmt2->execute()){
-				
+			if($stmt->execute()){
+
 				if(!$mail = smtpmailerChange($email,$hours,$date)) {
 					print "<br>".'<span style="color:red">'."Fail to send email.<br> Please try again!<br><hr><br>";
 					print "<br> <b>*Σημείωση:</b> Η ημερομηνία & ώρα του ραντεβού έχει αλλάξει, όμως το email ενημέρωσης ΔΕΝ μπόρεσε να σταλθεί στον πελάτη.<br> To ραντεβού πλέον βρίσκετε στην σελίδα <a href='?p=confirmAppointment'> Όλα τα επιβεβαιωμένα ραντεβού </a><br>";
@@ -153,14 +149,12 @@ END;
 
 // --------------------------------------------- Functions ------------------------------------------------------
 	function smtpmailerChange($email,$hour,$date) {
-		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
-		if($slittedURI[1]=="_aDemo"){
-			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
-		}else{
-			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
-			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
-		}
+		
+		define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
+		define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+		
+		define('GMAILUSER','niosekala@gmail.com'); // niose kala gmail email
+		define('GMAILPASSWORD','xuvzpmmvboekurgj'); //niose kala gmail pass
 
 		
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
@@ -180,13 +174,13 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
-		$mail->SetFrom(GUSER, 'Niose Kala');
+		$mail->Username = GMAILUSER;  
+		$mail->Password = GMAILPASSWORD;           
+		$mail->SetFrom(GMAILUSER, 'Niose Kala');
 		$mail->Subject = "Niose Kala - Η Ημερομηνία του Ραντεβού σας άλλαξε";
 		$mail->MsgHTML($message);
 		$mail->AddAddress($email);
-		$mail->AddBCC(GUSER);
+		$mail->AddBCC(GMAILUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			print_r($error);
@@ -198,14 +192,12 @@ END;
 
 
 	function smtpmailer($email,$hour) {
-		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
-		if($slittedURI[1]=="_aDemo"){
-			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
-		}else{
-			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
-			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
-		}
+		
+		define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
+		define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+		
+		define('GMAILUSER','niosekala@gmail.com'); // niose kala gmail email
+		define('GMAILPASSWORD','xuvzpmmvboekurgj'); //niose kala gmail pass
 		
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
 		$message .= '<body><divstyle="text-align:left"><h2>Επιβεβαίωση Ραντεβού:</h2><br><hr><br>';
@@ -223,13 +215,13 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
-		$mail->SetFrom(GUSER, 'Niose Kala');
+		$mail->Username = GMAILUSER;  
+		$mail->Password = GMAILPASSWORD;           
+		$mail->SetFrom(GMAILUSER, 'Niose Kala');
 		$mail->Subject = "Niose Kala - Επιβεβαίωση Ημ/νιας & Ώρας Ραντεβού";
 		$mail->MsgHTML($message);
 		$mail->AddAddress($email);
-		$mail->AddBCC(GUSER);
+		$mail->AddBCC(GMAILUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			print_r($error);
@@ -240,14 +232,12 @@ END;
 	}
 	
 	function smtpmailer2($email,$hour) {
-		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
-		if($slittedURI[1]=="_aDemo"){
-			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
-		}else{
-			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
-			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
-		}
+		
+		define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
+		define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+		
+		define('GMAILUSER','niosekala@gmail.com'); // niose kala gmail email
+		define('GMAILPASSWORD','xuvzpmmvboekurgj'); //niose kala gmail pass
 		
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
 		$message .= '<body><divstyle="text-align:left"><h2>Το Ραντεβού σας για τις '.$hour.' Ακυρώθηκε.</h2><br><hr><br>';
@@ -265,13 +255,13 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
-		$mail->SetFrom(GUSER, 'Niose Kala');
+		$mail->Username = GMAILUSER;  
+		$mail->Password = GMAILPASSWORD;           
+		$mail->SetFrom(GMAILUSER, 'Niose Kala');
 		$mail->Subject = "Niose Kala - Το Ραντεβού σας Ακυρώθηκε.";
 		$mail->MsgHTML($message);
 		$mail->AddAddress($email);
-		$mail->AddBCC(GUSER);
+		$mail->AddBCC(GMAILUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			return false;
@@ -281,21 +271,15 @@ END;
 	}
 
 	function getUrl($price,$name,$token){
-		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
-		if($slittedURI[1]=="_aDemo"){
-		//----- DEMO -----
-			$host = "https://demo.vivapayments.com/api/orders";
-			$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
-			$sourceCode = "9539";
-			$refURL= "https://demo.vivapayments.com/web/checkout?ref=";
-		}else{
-		//----- LIVE -----
-			$host = "https://www.vivapayments.com/api/orders";
-			$encAuth = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
-			$sourceCode = "3441";
-			$refURL = "https://www.vivapayments.com/web/checkout?ref=";
-		}
-
+	//----- DEMO -----
+		$host = "https://demo.vivapayments.com/api/orders";
+		$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
+		$sourceCode = "6726";
+		
+	//----- LIVE -----
+		$hostLive = "https://www.vivapayments.com/api/orders";
+		$encAuthLive = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
+		$sourceCodeLive = "3441";
 
 		$return = "";
 	    
@@ -313,16 +297,16 @@ END;
 		    "MerchantTrns"=> "Niose Kala",
 		   	"disableCash"=> true,
 		   	"disablePayAtHome"=> true,
-		   	"sourceCode"=>$sourceCode,
+		   	"sourceCode"=>$sourceCodeLive,
 		    "CustomerTrns"=> $productName,
 		    "disableIVR"=> true
 		);	
 		$headers = array(
 		    'Content-Type:application/json',
-		    'Authorization: Basic '.$encAuth // <---
+		    'Authorization: Basic '.$encAuthLive // <---
 		);
 		
-		$ch = curl_init(host);
+		$ch = curl_init($hostLive);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -333,7 +317,7 @@ END;
 		$result =json_decode($return);
 		$orderCode = $result->OrderCode;
 		
-		return $refURL.$orderCode;
+		return "https://www.vivapayments.com/web/checkout?ref=".$orderCode;
 
 	}
 ?>
