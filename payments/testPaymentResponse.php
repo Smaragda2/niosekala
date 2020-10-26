@@ -2,6 +2,16 @@
 	$paymentStatus = $_REQUEST['vivawallet'];
 	$paymentOrderUniqueID = $_REQUEST['s'];
 	
+	if(isset($_SESSION['dbconnect'])){
+		$mysqli = $_SESSION['dbconnect'];
+	}else{
+		include_once "../database/dbconnect.php";
+		$database = new Database();
+		$mysqli = $database->getConnection();
+		$_SESSION['dbconnect'] = $mysqli;
+	}
+
+	
 	define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
 	define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
 	
@@ -30,10 +40,10 @@
 
 		$headers = array(
 		    'Content-Type:application/json',
-		    'Authorization: Basic '.$encAuthLive  // <---
+		    'Authorization: Basic '.$encAuth  // <---
 		);
 	
-		$ch = curl_init($hostLive);
+		$ch = curl_init($host);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		
@@ -63,20 +73,25 @@
 			$stmt3 = $mysqli->prepare($updatePaymentInfo);
 			$paymentStatus = $stmt3->execute();
 		}
-		
-		$getRequestInfo = 'Select name,hours,email,notes from Request where paymentToken = "'.$paymentToken.'"';
+				
+		$getRequestInfo = 'Select name,onDate,atTime,email,notes from Request where paymentToken = "'.$paymentToken.'"';
 		$results = $mysqli->query($getRequestInfo);
 		$requestRow = $results->fetch_assoc();
+				
+		$formattedOnDate = date('d-m-Y',strtotime($requestRow['onDate']));
+		$notes = '';
+		if(isset($requestRow['notes']))
+			$notes = $requestRow['notes'];
 		
-		$message = '<body><divstyle="text-align:left"><br><h2>Η πληρωμή του Ραντεβού για τις '.$requestRow['hours'].' έχει ολοκληρωθεί:</h2><br><h3>Στοιχεία Πελάτη: </h3><br><hr><br>';
+		$message = '<body><divstyle="text-align:left"><br><h2>Η πληρωμή του Ραντεβού για τις '.$formattedOnDate.' '.$requestRow['atTime'].' έχει ολοκληρωθεί:</h2><br><h3>Στοιχεία Πελάτη: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Όνομα: '.$requestRow['name'].'<br>';
 		$message .= 'Email: '.$requestRow['email'].'<br></div>';
 		$message .= '<hr><br><h3>Σημειώσεις Ραντεβού: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left;width:90%">';
-		$message .= '<br>&nbsp;&nbsp;<textarea rows="5" readonly>'.$requestRow['notes'].'</textarea><br></div></div><hr><br></body>';
+		$message .= '<br>&nbsp;&nbsp;<textarea rows="5" readonly>'.$notes.'</textarea><br></div></div><hr><br></body>';
 
 		sendNewAppointmentMessage($paymentToken);
-		
+
 		if($status === true && $paymentStatus === true){
 			print<<<END
 				<div class="jumbotron col col-6-narrower col-12-mobilep" style="color:green">
@@ -142,12 +157,12 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GMAILUSER;  
-		$mail->Password = GMAILPASSWORD;           
-		$mail->SetFrom(GMAILUSER, 'Niose Kala');
+		$mail->Username = GUSER;  
+		$mail->Password = GPWD;           
+		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($message);
-		$mail->AddAddress(GMAILUSER);
+		$mail->AddAddress(GUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			echo $error;
@@ -169,12 +184,12 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GMAILUSER;  
-		$mail->Password = GMAILPASSWORD;           
-		$mail->SetFrom(GMAILUSER, 'Niose Kala');
+		$mail->Username = GUSER;  
+		$mail->Password = GPWD;           
+		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($body);
-		$mail->AddAddress(GMAILUSER);
+		$mail->AddAddress(GUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			echo $error;
@@ -187,9 +202,11 @@ END;
 	function sendNewAppointmentMessage($token){
 		$mysqli = $_SESSION['dbconnect'];
 
-		$getRequestInfo = 'SELECT r.name, hours,email,tel,notes, p.name as Pname, price FROM `Request` r JOIN Product p ON r.selectedProductID = p.id WHERE paymentToken = "'.$token.'"';
+		$getRequestInfo = 'SELECT r.name, onDate,atTime,email,tel,notes, p.name as Pname, price FROM `Request` r JOIN Product p ON r.selectedProductID = p.id WHERE paymentToken = "'.$token.'"';
 		$results = $mysqli->query($getRequestInfo);
 		$requestRow = $results->fetch_assoc();
+
+		$formattedOnDate = date('d-m-Y',strtotime($requestRow['onDate']));
 
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
 		
@@ -200,7 +217,7 @@ END;
 		$message .= '<hr><br><h3>Στοιχεία Ραντεβού: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Όνομα Συνεδρίας: '.$requestRow['Pname'].'<br>';
 		$message .= 'Κόστος Συνεδρίας: '.$requestRow['price'].'&euro;<br>';
-		$message .= '&nbsp;&nbsp; Επιθυμητή Ημερομηνία και Ώρα: '.$requestRow['hours'].'<br>';
+		$message .= '&nbsp;&nbsp; Επιθυμητή Ημερομηνία και Ώρα: '.$formattedOnDate.' '.$requestRow['atTime'].'<br>';
 		$message .= '&nbsp;&nbsp; Σημειώσεις Συνεδρίας: <br>&nbsp;&nbsp;<textarea rows="5" readonly>'.$requestRow['notes'].'</textarea><br></div></div><hr><br>';
 		$message .= '<div class="row">Μεταβείτε στην σελίδα του <a href="https://niosekala.gr/developement/admin">Admin</a> για την επιβεβαίωση του Ραντεβού.</div></body>';
 
