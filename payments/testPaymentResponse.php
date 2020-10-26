@@ -12,11 +12,14 @@
 	}
 
 	
-	define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-	define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
-	
-	define('GMAILUSER','niosekala@gmail.com'); // niose kala gmail email
-	define('GMAILPASSWORD','xuvzpmmvboekurgj'); //niose kala gmail pass
+		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
+		if($slittedURI[1]=="_aDemo"){
+			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
+			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+		}else{
+			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
+			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
+		}
 	
 	if($paymentStatus == 'success'){
 		$transactionID = $_REQUEST['t'];
@@ -27,23 +30,28 @@
 	
 	function successfullPayment($transactionID,$paymentOrderUniqueID){
 		$mysqli = $_SESSION['dbconnect'];
-
-	//----- DEMO -----
-		$host = "https://demo.vivapayments.com/api/transactions/".$transactionID;
-		$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
-		$sourceCode = "6726";
 		
-	//----- LIVE -----
-		$hostLive = "https://www.vivapayments.com/api/transactions/".$transactionID;
-		$encAuthLive = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
-		$sourceCodeLive = "3441";
+		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
+		if($slittedURI[1]=="_aDemo"){
+		//----- DEMO -----
+			$host = "https://demo.vivapayments.com/api/orders";
+			$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
+			$sourceCode = "9539";
+			$refURL= "https://demo.vivapayments.com/web/checkout?ref=";
+		}else{
+		//----- LIVE -----
+			$host = "https://www.vivapayments.com/api/orders";
+			$encAuth = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
+			$sourceCode = "3441";
+			$refURL = "https://www.vivapayments.com/web/checkout?ref=";
+		}
 
 		$headers = array(
 		    'Content-Type:application/json',
-		    'Authorization: Basic '.$encAuthLive  // <---
+		    'Authorization: Basic '.$encAuth  // <---
 		);
 	
-		$ch = curl_init($hostLive);
+		$ch = curl_init($host);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		
@@ -157,12 +165,12 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GMAILUSER;  
-		$mail->Password = GMAILPASSWORD;           
-		$mail->SetFrom(GMAILUSER, 'Niose Kala');
+		$mail->Username = GUSER;  
+		$mail->Password = GPWD;           
+		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($message);
-		$mail->AddAddress(GMAILUSER);
+		$mail->AddAddress(GUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			echo $error;
@@ -184,12 +192,12 @@ END;
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GMAILUSER;  
-		$mail->Password = GMAILPASSWORD;           
-		$mail->SetFrom(GMAILUSER, 'Niose Kala');
+		$mail->Username = GUSER;  
+		$mail->Password = GPWD;           
+		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($body);
-		$mail->AddAddress(GMAILUSER);
+		$mail->AddAddress(GUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			echo $error;

@@ -1,11 +1,13 @@
 
 <?php
-//	print_r($_POST);
-	define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-	define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
-	
-	define('GMAILUSER','niosekala@gmail.com'); // niose kala gmail email
-	define('GMAILPASSWORD','xuvzpmmvboekurgj'); //niose kala gmail pass
+	$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
+	if($slittedURI[1]=="_aDemo"){
+		define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
+		define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+	}else{
+		define('GUSER','niosekala@gmail.com'); // niose kala gmail email
+		define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
+	}
 	
 	$message = 	'<head> <meta charset="utf-8" /> </head>';
 
@@ -46,12 +48,12 @@
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
 		$mail->Port = 465; 
-		$mail->Username = GMAILUSER;  
-		$mail->Password = GMAILPASSWORD;           
-		$mail->SetFrom(GMAILUSER, 'Niose Kala');
+		$mail->Username = GUSER;  
+		$mail->Password = GPWD;           
+		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($body);
-		$mail->AddAddress(GMAILUSER);
+		$mail->AddAddress(GUSER);
 		if(!$mail->Send()) {
 			$error = 'Mail error: '.$mail->ErrorInfo; 
 			echo $error;

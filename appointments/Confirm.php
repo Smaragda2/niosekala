@@ -85,18 +85,21 @@ END;
 	}
 	
 	function getUrl($price,$name,$token){
-	//----- DEMO -----
-		$host = "https://demo.vivapayments.com/api/orders";
-		$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
-		$sourceCode = "9539";
-		$demoURL= "https://demo.vivapayments.com/web/checkout?ref=";
+		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
+		if($slittedURI[1]=="_aDemo"){
+		//----- DEMO -----
+			$host = "https://demo.vivapayments.com/api/orders";
+			$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
+			$sourceCode = "9539";
+			$refURL= "https://demo.vivapayments.com/web/checkout?ref=";
+		}else{
+		//----- LIVE -----
+			$host = "https://www.vivapayments.com/api/orders";
+			$encAuth = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
+			$sourceCode = "3441";
+			$refURL = "https://www.vivapayments.com/web/checkout?ref=";
+		}
 		
-	//----- LIVE -----
-		$hostLive = "https://www.vivapayments.com/api/orders";
-		$encAuthLive = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
-		$sourceCodeLive = "3441";
-		$liveURL = "https://www.vivapayments.com/web/checkout?ref=";
-
 		$return = "";
 	    
 	    $price = $price*100;
@@ -113,16 +116,16 @@ END;
 		    "MerchantTrns"=> "Niose Kala",
 		   	"disableCash"=> true,
 		   	"disablePayAtHome"=> true,
-		   	"sourceCode"=>$sourceCodeLive ,
+		   	"sourceCode"=>$sourceCode,
 		    "CustomerTrns"=> $productName,
 		    "disableIVR"=> true
 		);	
 		$headers = array(
 		    'Content-Type:application/json',
-		    'Authorization: Basic '.$encAuthLive // <---
+		    'Authorization: Basic '.$encAuth // <---
 		);
 		
-		$ch = curl_init($hostLive);
+		$ch = curl_init($host);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -133,7 +136,7 @@ END;
 		$result =json_decode($return);
 		$orderCode = $result->OrderCode;
 		
-		return $liveURL.$orderCode;
+		return $refURL.$orderCode;
 
 	}
 
