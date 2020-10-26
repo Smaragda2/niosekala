@@ -1,5 +1,8 @@
 
 <?php
+	if(isset($_SESSION['dateTimes'])){
+		unset($_SESSION['dateTimes']);
+	}
 	$responseDT = getDatesAndTimes();
 	$_SESSION['dateTimes']= $responseDT;
 	
@@ -210,8 +213,15 @@ END;
 	
 	
 	function getDatesAndTimes(){
+		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
+		if($slittedURI[1]=="_aDemo"){
+			$urlDates = 'https://niosekala.gr/_aDemo/services/getDatesAndTimeslots.php';
+		}else{
+			$urlDates = 'https://niosekala.gr/services/getDatesAndTimeslots.php';
+		}
+
 		$curl = curl_init();        
-		curl_setopt ($curl, CURLOPT_URL, 'https://niosekala.gr/_aDemo/services/getDatesAndTimeslots.php');   
+		curl_setopt ($curl, CURLOPT_URL, $urlDates);   
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
 		curl_setopt($curl, CURLOPT_HTTPGET, 1);  
 		$result = curl_exec($curl); 
