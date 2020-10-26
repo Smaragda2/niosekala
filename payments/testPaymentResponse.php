@@ -38,12 +38,14 @@
 			$encAuth = "NDA2MTY2ZWEtNmZhNy00ZTcwLTg1MmItMzYyNGY5ZWY1YzA2OnckRHs0Lw==";
 			$sourceCode = "9539";
 			$refURL= "https://demo.vivapayments.com/web/checkout?ref=";
+			$tokenHost = "https://demo.vivapayments.com/api/transactions/".$transactionID;
 		}else{
 		//----- LIVE -----
 			$host = "https://www.vivapayments.com/api/orders";
 			$encAuth = "N2RiMzQ0YTQtMzlmYy00N2ExLWFiMjUtYzkyZWViYzMxNGRhOjU3V3NBT2gzNjhKbjk5Zk83SHV0WFFMM2YzaDk3VA==";
 			$sourceCode = "3441";
 			$refURL = "https://www.vivapayments.com/web/checkout?ref=";
+			$tokenHost = "https://www.vivapayments.com/api/transactions/".$transactionID;
 		}
 
 		$headers = array(
@@ -51,7 +53,7 @@
 		    'Authorization: Basic '.$encAuth  // <---
 		);
 	
-		$ch = curl_init($host);
+		$ch = curl_init($tokenHost);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		
