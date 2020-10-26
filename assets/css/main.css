@@ -49,6 +49,7 @@ blockquote, q {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+	max-width:90% !important;
 }
 
 body {
@@ -65,7 +66,7 @@ input::-moz-focus-inner {
 	padding: 0;
 }
 
-input, select, textarea {
+select, textarea {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	-ms-appearance: none;
@@ -455,8 +456,13 @@ input, select, textarea {
 					padding-top: 25px;
 				}
 
-		.row {
+		.firstRow {
 			margin-top: -50px;
+			margin-left: -50px;
+		}
+
+		.row {
+			margin-top: -15px;
 			margin-left: -50px;
 		}
 
@@ -2042,6 +2048,13 @@ input, select, textarea {
 		text-decoration: none;
 		width: 100%;
 	}
+	input[type=radio], input[type=checkbox] {
+		-moz-appearance: auto;
+		-webkit-appearance: auto;
+		-ms-appearance: auto;
+		appearance: auto;
+	}
+
 
 		input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, textarea:focus {
 			border-color: #37c0fb;
@@ -2381,10 +2394,25 @@ input, select, textarea {
 
 /* Tables */
 
-	table {
-		width: 100%;
+	table{
+		width:90%;
+		display: flex;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		align-items: stretch;
+	  	border: 1px solid #ddd;
+		border-collapse: collapse;
+		border-spacing: 0;
 	}
 
+	th, td {
+	  text-align: left;
+	  padding: 8px;
+	}
+		
+	tr:nth-child(even) {background: #CCC}
+	tr:nth-child(odd) {background: #FFF}
+	
 		table.default {
 			width: 100%;
 		}
@@ -2794,7 +2822,7 @@ input, select, textarea {
 /* Wide */
 
 	@media screen and (max-width: 1680px) {
-
+				
 		/* Basic */
 
 			body, input, select, textarea {
@@ -2813,7 +2841,18 @@ input, select, textarea {
 /* Normal */
 
 	@media screen and (max-width: 1280px) {
-
+		/* Tables */
+	
+		table{
+			width:90%;
+			display: flex;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			align-items: stretch;
+		  	border: 1px solid #ddd;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
 		/* Basic */
 
 			body, input, select, textarea {
@@ -2881,6 +2920,18 @@ input, select, textarea {
 
 	@media screen and (max-width: 980px) {
 
+		/* Tables */
+	
+		table{
+			width:90%;
+			display: flex;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			align-items: stretch;
+		  	border: 1px solid #ddd;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
 		/* Basic */
 
 			body, input, select, textarea {
@@ -2897,7 +2948,19 @@ input, select, textarea {
 	}
 
 	@media screen and (max-width: 840px) {
+		/* Tables */
 
+		table{
+			width:80%;
+			display: flex;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			align-items: stretch;
+		  	border: 1px solid #ddd;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+	
 		/* Basic */
 
 			html, body {
@@ -2929,6 +2992,7 @@ input, select, textarea {
 					top: -0.25em;
 					font-size: 1.25em;
 				}
+				
 
 		/* Box */
 
@@ -3203,7 +3267,19 @@ input, select, textarea {
 /* Mobile */
 
 	@media screen and (max-width: 736px) {
-
+		/* Tables */
+							
+		table{
+			width:90%;
+			display: flex;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			align-items: stretch;
+		  	border: 1px solid #ddd;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+	
 		/* Basic */
 
 			body, input, select, textarea {
@@ -3269,6 +3345,18 @@ input, select, textarea {
 /* Mobile (Portrait) */
 
 	@media screen and (max-width: 480px) {
+		/* Tables */
+	
+		table{
+			width:90%;
+			display: flex;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			align-items: stretch;
+		  	border: 1px solid #ddd;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
 
 		/* Icon */
 

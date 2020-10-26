@@ -13,11 +13,14 @@
 
 ?>
 	<head>
+		<title>Niose Kala</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/_custom-forms.scss" />
 		<script src="https://kit.fontawesome.com/ec3f31a4cb.js" crossorigin="anonymous"></script>
+		
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 		
 		<meta name="referrer" content="strict-origin-when-cross-origin">
 		<meta property="og:type" content="website"/>
@@ -45,10 +48,16 @@
 								<li><a href="?p=start">Αρχική</a></li>
 								<li><a href="?p=Services">Υπηρεσίες</a></li>
 								<li><a href="?p=whyOnline">Γιατί Online?</a></li>
-								<li><a href="?p=howTo">Οδηγός Πληρωμής</a></li>
 								<li><a href="?p=Biography">Βιογραφικό</a></li>
 								<li><a href="?p=Contact">Επικοινωνία</a></li>
-								<li><a href="?p=Oroi">Όροι Χρήσης</a></li>
+								<li>
+									<a><i class="fa fa-bars"> Περισσότερα</i></a>
+									<ul>
+										<!--<li><a href="?p=Videos">Βίντεο - Συνέντευξεις</a></li>-->
+										<li><a href="?p=howTo">Οδηγός Πληρωμής</a></li>
+										<li><a href="?p=Oroi">Όροι Χρήσης</a></li>
+									</ul>
+								</li>
 							</ul>
 						</nav>
 
@@ -94,6 +103,8 @@
 							case "howTo" :				require "howTo/howTo.php";
 														break;
 							case "Confirm" :			require "appointments/Confirm.php";
+														break;
+							case "Videos" :				require "videos.php";
 														break;
 						}
 					?>
@@ -248,7 +259,6 @@
 
 		?>
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
