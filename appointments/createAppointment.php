@@ -1,12 +1,7 @@
 
 <?php
-	print "<div id='test'> Dates and Times - Array:<br>";
 	$responseDT = getDatesAndTimes();
 	$_SESSION['dateTimes']= $responseDT;
-	
-	print_r($responseDT);
-	print "<br>End of Array</div> ";
-
 	
 	if( !isset($_POST['id']) || !isset($_POST['name']) || !isset($_POST['price']) ){
 		print<<<END
