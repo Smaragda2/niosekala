@@ -31,8 +31,8 @@
 	$onDaysArray = array($onMonday, $onTuesday, $onWednsday, $onThursday, $onFriday, $onSaturday, $onSunday);
 
 	$firstDate = date('d-m-Y', strtotime('now + '.$minDays.'day'));
-	$selectHasBooked = 'SELECT count(*) as hasBooked FROM Booked where onDate>'.$firstDate;
-	$selectBookedDatesAndTimes = 'SELECT onDate,atTime FROM Booked where onDate>'.$firstDate;
+	$selectHasBooked = 'SELECT count(*) as hasBooked FROM Booked where onDate>='.$firstDate;
+	$selectBookedDatesAndTimes = 'SELECT onDate,atTime FROM Booked where onDate>='.$firstDate;
 	
 	$stmt = $mysqli->prepare($selectHasBooked );
 	$stmt->execute();
@@ -52,7 +52,7 @@
 		else if(strcmp($hasBooked,"0")!==0)
 			$hasBook = true;
 	}
-	if(hasBook){
+	if($hasBook){
 		$bookk=array();
 		while ($datesResults = $results1->fetch_assoc()){
 			$onDate = date('d-m-Y',strtotime($datesResults['onDate'])); 
@@ -67,14 +67,13 @@
 		}
 	}	
 	
-
 	
 	$dates = getDates($minDays,$maxDays);
 	if(sizeof($dates)>0){
 		$validatedDates = validateDates($dates, $onDaysArray, $daysofWeek);
 		$validatedTimes = getTimes($startTime,$endTime,$validatedDates);
 
-		if($hasBook){			
+		if($hasBook){	
 			$response = removeBooked($validatedTimes,$bookedDays);
 		}else{
 			$response = $validatedTimes;
@@ -93,6 +92,9 @@
 			$newTime = $start.':'.$timeSplit[1];
 			array_push($times, $newTime);
 			$start++;
+			if(strlen((string)$start)==1){
+				$start= str_pad($start, 2, '0', STR_PAD_LEFT);
+			}
 		}
 		$lastTime = (((int)$end*60)+(int)$endSplit[1]);
 		$latest = (((int)$start*60)+(int)$timeSplit[1]);
@@ -151,8 +153,8 @@
 			foreach($value as $k=>$valueTime){
 				$splited=explode(':',$valueTime);
 				$val = $splited[0].":".$splited[1];
-					
-				$searched=array_search($val, $datesAndTimes[$key]);
+
+				$searched=array_search($val, $temp[$key]);
 				unset($temp[$key][$searched]);
 			}
 		}
