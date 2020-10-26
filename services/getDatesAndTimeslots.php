@@ -73,13 +73,14 @@
 	if(sizeof($dates)>0){
 		$validatedDates = validateDates($dates, $onDaysArray, $daysofWeek);
 		$validatedTimes = getTimes($startTime,$endTime,$validatedDates);
+
 		if($hasBook){			
 			$response = removeBooked($validatedTimes,$bookedDays);
 		}else{
 			$response = $validatedTimes;
 		}
 	}
-	echo $response;
+	echo json_encode($response);
 			
 	function getTimes($startTime, $endTime, $dates){
 		$times = array();
@@ -141,7 +142,7 @@
 		foreach($dates as $k=>$date){
 			$datesAndTimes[$date]=$times;
 		}
-		return json_encode($datesAndTimes);
+		return $datesAndTimes;
 	}
 	
 	function removeBooked($datesAndTimes,$bookedDates){
@@ -157,6 +158,8 @@
 		}
 		return $temp;
 	}
+	
+	
 ?>
 
 
