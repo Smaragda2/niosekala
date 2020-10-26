@@ -105,9 +105,22 @@ END;
 				</div>
 				<br>
 				<div class="row">
+END;
+		if($isPaid){
+		print<<<END
 					<div class="col align-self-end" align="right">
 						<input type="submit" id="completeAppointment" name="completeAppointment"  value="Το Ραντεβού ολοκληρώθηκε" style="background-color:#37c0fb" />
 					</div>
+END;
+		}else{
+		print<<<END
+					<div class="col align-self-end" align="right">
+						Το Ραντεβού δεν έχει πληρωθεί ακόμα. Παρακαλώ επικοινωνήστε με τον Πελάτη για την ολοκλήρωση τις πληρωμής, ώστε να μπορείτε να ολοκληρώσετε το Ραντεβού.
+					</div>
+END;
+		}
+		print<<<END
+
 				</div>
 			</form>
 			<br><hr><br>
