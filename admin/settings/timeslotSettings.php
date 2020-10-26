@@ -52,10 +52,10 @@
 	$daysofWeekGR = array('Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο', 'Κυριακή');
 		
 	$daysDiv = '<div><label for="days">Ποιες ημέρες μπορεί να κλείσει ραντεβού ο Πελάτης;</label><br>';
-	$daysDiv .= '<table name="days" id="days" style="width:50%">';
+	$daysDiv .= '<table name="days" id="days" style="width:min-content;">';
 
 	for($i=0; $i<7; $i++){		
-		$daysDiv .= '<tr><td style="text-align:center">'.$daysofWeekGR[$i].'</td><td><input type="checkbox" id="'.$daysofWeek[$i].'" name="'.$daysofWeek[$i].'" value="yes" ';
+		$daysDiv .= '<tr><td style="text-align:center">'.$daysofWeekGR[$i].'</td><td class="col-10"><input type="checkbox" id="'.$daysofWeek[$i].'" name="'.$daysofWeek[$i].'" value="yes" ';
 			if($allDaysValues[$i] == 1){
 				$daysDiv .= "checked='checked' ";
 			}

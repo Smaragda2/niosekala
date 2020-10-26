@@ -129,7 +129,7 @@
 															break;
 								case "Appointments" :		require "appointments/Appointments.php";
 															break;
-								case "Test" :				require "../payments/test.php";
+								case "Payment" :			require "payments/testPaymentResponse.php";
 															break;
 								case "Request" :			require "services/request.php";
 															break;
