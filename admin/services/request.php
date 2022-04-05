@@ -1,8 +1,6 @@
 <?php
 
 	if(isset($_POST['RequestAppointment'])){
-
-
 		$mysqli = $_SESSION['dbconnect'];
 
 		date_default_timezone_set('Europe/Athens');
@@ -23,7 +21,6 @@
 		$insertBooked = "INSERT INTO `Booked`(`createdAt`,`onDate`, `atTime`) VALUES ('".$createdAt."','".$formattedOnDate."','".$atTime."')";
 
 		$send = false;
-
 		$createdAt = $startTime;
 
 		$tokenStr = $email.','.$hour.','.$createdAt;
@@ -34,7 +31,6 @@
 			print $bookedStmt->error;
 
 		if($_POST['whereTo'] == "Skype"){
-
 			$stmt = $mysqli->prepare($insertFullRequest);
 			$stmt->bind_param("sssssssisss", $_POST['fullName'], $_POST['email'], $startTime, $_POST['tel'], $_POST['whereTo'], $_POST['SkypeName'], $_POST['notes'], $_POST['id'],$token, $formattedOnDate, $atTime);
 
@@ -66,10 +62,10 @@
 
 
 		if($send){
-			<?php Logger::info("Appointment Info {Date and Time: $hour, Customer Name: $_POST['fullName'],
-												Customer Email: $_POST['email'], Customer Phone: $_POST['tel'], Selected Product: $_POST['name'],
-												Price: $_POST['price'], Appointment Notes: $notes, Appoint through: $_POST['whereTo']}") ?>
-			<?php Logger::info("Appointment Token: $token, Created At: $createdAt") ?>
+			Logger::info('Appointment Info {Date and Time: '.$hour.', Customer Name: '.$_POST['fullName'].',
+												Customer Email: '.$_POST['email'].', Customer Phone: '.$_POST['tel'].', Selected Product: '.$_POST['name'].',
+												Price: '.$_POST['price'].', Appointment Notes: '.$notes.', Appoint through: '.$_POST['whereTo'].'}');
+			Logger::info('Appointment Token: '.$token.', Created At: '.$createdAt);
 
 			$url = getUrl($_POST['price'],$_POST['name'],$token);
 

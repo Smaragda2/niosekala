@@ -1,7 +1,5 @@
 
 <?php
-
-
 	$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 	if($slittedURI[1]=="_aDemo"){
 		define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
@@ -32,12 +30,9 @@
 			print "<br>Fail to send email.<br> ";
 			print("<br>Please try again!<hr>");
 			Logger::warn('FAILED to send email - Customer Info {Name: '.$_POST['name'].', Email: '.$_POST['email'].', Message: '.$_POST['message'].'}');
-			//echo "<script>setTimeout();</script>";
-
 		}else{
 			print "<br>".'<span style="color:green">'."Το μήνυμα στάλθηκε με επιτυχία. Σύντομα θα επικοινωνίσουμε μαζί σας!</p><br>";
 			Logger::info('Email send SUCCESSFULLY - Customer Info {Name: '.$_POST['name'].', Email: '.$_POST['email'].', Message: '.$_POST['message'].'}');
-			//echo "<script>setTimeout();</script>";
 		}
 	}
 

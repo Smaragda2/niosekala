@@ -1,7 +1,5 @@
 <?php
-
 	if(isset($_POST['RequestAppointment'])){
-
 		date_default_timezone_set('Europe/Athens');
 		$datum = new DateTime();
 		$startTime = $datum->format('Y-m-d H:i:s');
@@ -43,7 +41,6 @@
 			print $bookedStmt->error;
 
 		if($_POST['whereTo'] == "Skype"){
-
 			$stmt = $mysqli->prepare($insertFullRequest);
 			$stmt->bind_param("sssssssisss", $_POST['fullName'], $_POST['email'], $startTime, $_POST['tel'], $_POST['whereTo'], $_POST['SkypeName'], $_POST['notes'], $_POST['id'],$token, $formattedOnDate, $selectedTime);
 
@@ -64,7 +61,7 @@
 		}
 
 		Logger::info('Appointment Info {Date: '.$selectedDate.', At Time: '.$selectedTime.', Customer Name: '.$_POST['fullName'].', Customer Email: '.$_POST['email'].', Customer Phone: '.$_POST['tel'].', Selected Product: '.$_POST['name'].',Price: '.$_POST['price'].', Appointment Notes: '.$_POST['notes'].', Appoint through: '.$_POST['whereTo'].'}');
-		Logger::info('Appointment Token: '.$token.', Created At: '.$createdAt); 
+		Logger::info('Appointment Token: '.$token.', Created At: '.$createdAt);
 
 		$message = '<div style="text-align:left"><br><h3>Τα στοιχεία σας: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Ονοματεπώνυμο: '.$_POST['fullName'].'<br>';
