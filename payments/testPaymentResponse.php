@@ -1,7 +1,7 @@
 <?php
 	$paymentStatus = $_REQUEST['vivawallet'];
 	$paymentOrderUniqueID = $_REQUEST['s'];
-	
+
 	if(isset($_SESSION['dbconnect'])){
 		$mysqli = $_SESSION['dbconnect'];
 	}else{
@@ -11,7 +11,7 @@
 		$_SESSION['dbconnect'] = $mysqli;
 	}
 
-	
+
 		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 		if($slittedURI[1]=="_aDemo"){
 			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
@@ -20,17 +20,17 @@
 			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
 			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
 		}
-	
+
 	if($paymentStatus == 'success'){
 		$transactionID = $_REQUEST['t'];
 		successfullPayment($transactionID,$paymentOrderUniqueID);
 	}else{
 		PaymentFailed($paymentOrderUniqueID);
 	}
-	
+
 	function successfullPayment($transactionID,$paymentOrderUniqueID){
 		$mysqli = $_SESSION['dbconnect'];
-		
+
 		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 		if($slittedURI[1]=="_aDemo"){
 		//----- DEMO -----
@@ -52,25 +52,25 @@
 		    'Content-Type:application/json',
 		    'Authorization: Basic '.$encAuth  // <---
 		);
-	
+
 		$ch = curl_init($tokenHost);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
+
 		$return= curl_exec($ch);
 		curl_close($ch);
-			
+
 		$result =json_decode($return);
 		$paymentToken = $result->Transactions[0]->Order->Tags[0];
-		
+
 		$updatePayment = 'UPDATE Request SET isPaid=true WHERE paymentToken="'.$paymentToken.'"';
 
 		$stmt = $mysqli->prepare($updatePayment);
 		$status = $stmt->execute();
-		
+
 		$paymentStatus = false;
-		
-		$getPaymentInfoByPaymentToken = 'SELECT COUNT(*) as exist FROM `paymentInfo` WHERE paymentToken = "'.$paymentToken.'"';	
+
+		$getPaymentInfoByPaymentToken = 'SELECT COUNT(*) as exist FROM `paymentInfo` WHERE paymentToken = "'.$paymentToken.'"';
 		$results = $mysqli->query($getPaymentInfoByPaymentToken);
 		$row = $results->fetch_assoc();
 
@@ -83,22 +83,26 @@
 			$stmt3 = $mysqli->prepare($updatePaymentInfo);
 			$paymentStatus = $stmt3->execute();
 		}
-				
+
 		$getRequestInfo = 'Select name,onDate,atTime,email,notes from Request where paymentToken = "'.$paymentToken.'"';
 		$results = $mysqli->query($getRequestInfo);
 		$requestRow = $results->fetch_assoc();
-				
+
 		$formattedOnDate = date('d-m-Y',strtotime($requestRow['onDate']));
 		$notes = '';
 		if(isset($requestRow['notes']))
 			$notes = $requestRow['notes'];
-		
+
 		$message = '<body><divstyle="text-align:left"><br><h2>Η πληρωμή του Ραντεβού για τις '.$formattedOnDate.' '.$requestRow['atTime'].' έχει ολοκληρωθεί:</h2><br><h3>Στοιχεία Πελάτη: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Όνομα: '.$requestRow['name'].'<br>';
 		$message .= 'Email: '.$requestRow['email'].'<br></div>';
 		$message .= '<hr><br><h3>Σημειώσεις Ραντεβού: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left;width:90%">';
 		$message .= '<br>&nbsp;&nbsp;<textarea rows="5" readonly>'.$notes.'</textarea><br></div></div><hr><br></body>';
+
+		Logger::info('Successfull Payment {transactionID: '.$transactionID.', paymentOrderUniqueID: '.$paymentOrderUniqueID.', paymentToken: '.$paymentToken.'} '.
+		            'Appointment Info {Date: '.$formattedOnDate.', At Time: '.$requestRow['atTime'].', Customer Name: '.$requestRow['name'].', Customer Email: '.
+		            $requestRow['email'].', Appointment Notes: '.$requestRow['notes'].'}');
 
 		sendNewAppointmentMessage($paymentToken);
 
@@ -107,7 +111,7 @@
 				<div class="jumbotron col col-6-narrower col-12-mobilep" style="color:green">
 					Η πληρωμή σαν ολοκληρώθηκε με επιτυχία!
 					<br>Σας ευχαριστούμε για την εμπιστοσύνη.
-				</div>	
+				</div>
 END;
 			smtpmailer($message);
 		}else{
@@ -120,20 +124,22 @@ END;
 					<br>Θα πρέπει στο κείμενο μέσα, να αναφέρετε το "Transaction ID", καθώς και τον κωδικό του ραντεβού σας.
 					<br>ο Αριθμός του Transaction ID σας είναι: <b>$transactionID</b>., και ο κωδικός του ραντεβού σας είναι "$paymentToken".
 					<br>Π.χ. To Transaction ID είναι "94d4fd50-c093-4745-8316-1aa54b665b97".
-				</div>	
+				</div>
 END;
 				smtpmailer($message);
 		}
-			
+
 	}
-	
+
 	function PaymentFailed($paymentOrderUniqueID){
+		Logger::info('Payment with UniqueID ['.$paymentOrderUniqueID.'] FAILED');
+
 		$mysqli = $_SESSION['dbconnect'];
-		
+
 		$insertPaymentInfo = 'INSERT INTO paymentInfo(orderUniqueID, paymentStatus) VALUES ('.$paymentOrderUniqueID.', "Failed")';
 		$stmt = $mysqli->prepare($insertPaymentInfo);
 		$status = $stmt->execute();
-		
+
 		if($status === true){
 			print<<<END
 				<div class="jumbotron col col-6-narrower col-12-mobilep" style="color:red">
@@ -142,39 +148,41 @@ END;
 					<hr>
 					<br>
 					<b>ΣΗΜΕΙΩΣΗ:</b> Εάν συνεχίζεται να έχετε πρόβλημα με την ολοκλήρωση της πληρωμής σας, παρακαλώ προωθήστε το email που σας στείλαμε με τίτλο "Niose Kala - Επιβεβαίωση Ημ/νιας & Ώρας Ραντεβού", προσθέτοντας στο email το εξής κείμενο: <b>"ID πληρωμής της Παραγγελίας: $paymentOrderUniqueID"</b>, στον δημιουργό της Ιστοσελίδας στο email: <b>Email: smaragda.prasianaki@gmail.com</b>.
-				</div>	
+				</div>
 END;
 		}else{
 			print<<<END
 				<div class="jumbotron col col-6-narrower col-12-mobilep" style="color:red">
 					Η πληρωμή σας μέσω της Ιστοσελίδας Viva Wallet δεν μπόρεσε να ολοκληρωθεί, παρακαλώ δοκιμάστε ξανά αργότερα!
-				</div>	
+				</div>
 END;
 		}
 	}
-	
-	function smtpmailer($message) { 
+
+	function smtpmailer($message) {
 		require_once('mailer/class.phpmailer.php');
-		
+
 		$subject = "Niose Kala - Μια Πληρωμή ολοκληρώθηκε.";
-		
+
+		Logger::info('Notify customer about Payment, Email Subject: '.$subject);
+
 		global $error;
 		$mail = new PHPMailer();  // create a new object
-		$mail->CharSet="UTF-8";     
+		$mail->CharSet="UTF-8";
 		$mail->IsSMTP(); // enable SMTP
 		$mail->SMTPDebug = 0;  // debugging: 1 = errors and messages, 2 = messages only
 		$mail->SMTPAuth = true;  // authentication enabled
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
-		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
+		$mail->Port = 465;
+		$mail->Username = GUSER;
+		$mail->Password = GPWD;
 		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($message);
 		$mail->AddAddress(GUSER);
 		if(!$mail->Send()) {
-			$error = 'Mail error: '.$mail->ErrorInfo; 
+			$error = 'Mail error: '.$mail->ErrorInfo;
 			echo $error;
 			return false;
 		} else {
@@ -182,26 +190,26 @@ END;
 		}
 	}
 
-	function smtpmailerNew($body,$subject) { 
+	function smtpmailerNew($body,$subject) {
 		require_once('mailer/class.phpmailer.php');
-		
+
 		global $error;
 		$mail = new PHPMailer();  // create a new object
-		$mail->CharSet="UTF-8";     
+		$mail->CharSet="UTF-8";
 		$mail->IsSMTP(); // enable SMTP
 		$mail->SMTPDebug = 0;  // debugging: 1 = errors and messages, 2 = messages only
 		$mail->SMTPAuth = true;  // authentication enabled
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
-		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
+		$mail->Port = 465;
+		$mail->Username = GUSER;
+		$mail->Password = GPWD;
 		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = $subject;
 		$mail->MsgHTML($body);
 		$mail->AddAddress(GUSER);
 		if(!$mail->Send()) {
-			$error = 'Mail error: '.$mail->ErrorInfo; 
+			$error = 'Mail error: '.$mail->ErrorInfo;
 			echo $error;
 			return false;
 		} else {
@@ -219,7 +227,7 @@ END;
 		$formattedOnDate = date('d-m-Y',strtotime($requestRow['onDate']));
 
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
-		
+
 		$message .= '<body><divstyle="text-align:left"><br><h3>Στοιχεία Πελάτη: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Ονοματεπώνυμο: '.$requestRow['name'].'<br>';
 		$message .= 'Email: '.$requestRow['email'].'<br>';
@@ -235,12 +243,10 @@ END;
 			print "<br>Fail to send email.<br> ";
 			print('<br>Παρακαλώ καλέστε μας στο τηλέφωνο: <a href="tel:6948266209">6948266209</a>, ώστε να ελέγξουμε το ραντεβού σας!<hr>');
 			//echo "<script>setTimeout();</script>";
-	
+
 		}else{
 			print "<br>".'<div class="jumbotron col col-6-narrower col-12-mobilep" style="color:green">'."Η αίτηση σας στάλθηκε με επιτυχία!<br> Σύντομα θα επικοινωνήσουμε μαζί σας για την επιβεβαίωση της Ημερομηνίας. </div><br>";
 			//echo "<script>setTimeout();</script>";
 		}
 	}
 ?>
-
-
