@@ -11,6 +11,7 @@
 
 	// Breakpoints.
 		breakpoints({
+			ultrawide: [ '1681px',	'2560px'],
 			wide:      [ '1281px',  '1680px' ],
 			normal:    [ '981px',   '1280px' ],
 			narrow:    [ '841px',   '980px'  ],

@@ -12,7 +12,7 @@
 	Ονομάζομαι Σταυρούλα Καροφυλλάκη και είμαι εδώ ακολουθώντας τον δρόμο της ψυχής μου που δεν είναι άλλος από το να βοηθήσω να ΝΙΩΣΟΥΝ ΚΑΛΑ το δυνατόν περισσότεροι άνθρωποι και αυτό:
 	<br>
 	<br>* Γίνεται σε πολύ Ιδιωτικό χώρο, τον χώρο σας.
-	<img loading="lazy" src="images/startImg.jpg" width="200px" height="150px" align="absmiddle" class="auto-style1" style="float: right;margin-right:30%;">
+	<img loading="lazy" tabindex="-1" alt="Image In text. No talk, see, hear." src="images/startImg.jpg" width="200px" height="150px" align="absmiddle" class="auto-style1" style="float: right;margin-right:30%;">
 	<br>
 	<br>* Σέβομαι το απόρρητό σας!
 	<br>

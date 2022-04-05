@@ -17,11 +17,12 @@
 		<title>Niose Kala</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="Σύμβουλος ψυχικής υγείας - Σταυρούλα Καροφυλλάκη. Niose Kala. Online Συνεδρίες ψυχολογίας."/>
 		<link rel="stylesheet" href="assets/css/main.css" media="print" onload="this.media='all'" />
 		<link rel="stylesheet" href="assets/css/_custom-forms.scss" media="print" onload="this.media='all'"/>
-		<script src="https://kit.fontawesome.com/ec3f31a4cb.js" crossorigin="anonymous" async></script>
+		<script src="https://kit.fontawesome.com/ec3f31a4cb.js" crossorigin="anonymous"></script>
 
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js" async></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 		<meta name="referrer" content="strict-origin-when-cross-origin">
 		<meta property="og:type" content="website"/>
@@ -45,7 +46,7 @@
 					<!-- Nav -->
 						<nav id="nav" style="background-color:#182061;float: left;list-style:none;width:100%;">
 							<ul style="height: 100px;">
-								<li style="white-space: nowrap;display: inline;text-align:center;line-height: 100px;"><img loading="lazy" src="images/logo.png" height="100px" width="300px" style="float: left;"></li>
+								<li style="white-space: nowrap;display: inline;text-align:center;line-height: 100px;"><img loading="lazy" alt="Logo Image. Σύμβουλος ψυχικής υγείας Καροφυλλάκη Σταυρούλα" src="images/logo.webp" height="100px" width="300px" style="float: left;"></li>
 								<li><a href="?p=start">Αρχική</a></li>
 								<li><a href="?p=Services">Υπηρεσίες</a></li>
 								<li><a href="?p=whyOnline">Γιατί Online?</a></li>
