@@ -17,11 +17,11 @@
 		<title>Niose Kala</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel="stylesheet" href="assets/css/_custom-forms.scss" />
-		<script src="https://kit.fontawesome.com/ec3f31a4cb.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="assets/css/main.css" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="assets/css/_custom-forms.scss" media="print" onload="this.media='all'"/>
+		<script src="https://kit.fontawesome.com/ec3f31a4cb.js" crossorigin="anonymous" async></script>
 
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js" async></script>
 
 		<meta name="referrer" content="strict-origin-when-cross-origin">
 		<meta property="og:type" content="website"/>
@@ -30,10 +30,10 @@
 		<meta property="og:description" content="Το τι μπορείς να κάνεις, είναι πιο σημαντικό από το ποιος είσαι"/>
 
 	    <!-- Bootstrap core CSS -->
-	    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
 
 	    <!-- Custom styles for this template -->
-		<link href="https://getbootstrap.com/docs/4.0/examples/checkout/form-validation.css" rel="stylesheet">
+		<link href="https://getbootstrap.com/docs/4.0/examples/checkout/form-validation.css" rel="stylesheet" media="print" onload="this.media='all'">
 	</head>
 	<body class="is-preload">
 		<div id="page-wrapper">
@@ -45,7 +45,7 @@
 					<!-- Nav -->
 						<nav id="nav" style="background-color:#182061;float: left;list-style:none;width:100%;">
 							<ul style="height: 100px;">
-								<li style="white-space: nowrap;display: inline;text-align:center;line-height: 100px;"><img src="images/logo.png" height="100px" width="300px" style="float: left;"></li>
+								<li style="white-space: nowrap;display: inline;text-align:center;line-height: 100px;"><img loading="lazy" src="images/logo.png" height="100px" width="300px" style="float: left;"></li>
 								<li><a href="?p=start">Αρχική</a></li>
 								<li><a href="?p=Services">Υπηρεσίες</a></li>
 								<li><a href="?p=whyOnline">Γιατί Online?</a></li>

@@ -2,7 +2,7 @@
 class Logger {
   private function addEntry($message){
     date_default_timezone_set('Europe/Athens');
-    $fileName = sprintf("./webVisits/visits_%s\n", date('c'));
+    $fileName = sprintf("./webVisits/visits_%s", date("d-m-y"));
     $handle = fopen($fileName, 'a');
     fwrite($handle, sprintf("%s %s\n", date('c'), $message));
     fclose($handle);

@@ -17,7 +17,7 @@
 	<br>
 	<div class="jumbotron row" style="width:100%;" >
 		<p style="color:green;font-size:large;text-align:left"><b>ΓΙΑΤΙ ONLINE ΣΥΝΕΔΡΙΕΣ </b>&nbsp;&nbsp;&nbsp;
-		<img src="images/giatiOnline.jpg" align="absmiddle" width="150px" height="100px"></p>
+		<img loading="lazy" src="images/giatiOnline.jpg" align="absmiddle" width="150px" height="100px"></p>
 		<p align="left" style="margin-right:2%;">
 			<br>
 			<br>Η διαδικασία της online συμβουλευτικής  μας επιτρέπει  λόγω χιλιομετρικής απόστασης, άλλα και λόγω τον συνθηκών που δημιουργεί ο COVID19, να μπορούμε να δουλέψουμε θέματα και δυσκολίες που αντιμετωπίζετε με τον ίδιο τρόπο όπως η φυσική μας παρουσία σε κάποιο γραφείο. Εννοείται πως δεσμεύομαι από το απόρρητο και τις κατευθυντήριες γραμμές δεοντολογίας του επαγγέλματός μου, ενώ άρση του απορρήτου γίνεται μόνο σε συγκεκριμένες περιπτώσεις που ορίζει ο νόμος (π.χ εάν εκδηλωθεί έντονη κρίση και υπάρχει κίνδυνος να βλάψετε τον εαυτό σας ή άλλους).
