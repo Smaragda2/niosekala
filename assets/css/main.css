@@ -2601,7 +2601,15 @@ select, textarea {
 			}
 		}
 
-		@media screen and (max-width: 1023px) {
+		@media screen and (max-width: 1680px) {
+			#nav > ul{
+				width: 100% !important;
+				transform: translateX(0%) !important;
+				padding: !important;
+			}
+		}
+
+		@media screen and (max-width: 1028px) {
 			#nav > ul{
 				width: 100% !important;
 				transform: translateX(0%) !important;

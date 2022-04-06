@@ -30,6 +30,9 @@
 		<meta property="og:url" content="https://niosekala.gr/"/>
 		<meta property="og:description" content="Το τι μπορείς να κάνεις, είναι πιο σημαντικό από το ποιος είσαι"/>
 
+		<meta name="theme-color" media="(prefers-color-scheme: light)" content="white">
+		<link rel="manifest" href="/manifest.json">
+
 	    <!-- Bootstrap core CSS -->
 	    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet" media="print" onload="this.media='all'">
 
@@ -53,7 +56,9 @@
 								<li><a href="?p=Biography">Βιογραφικό</a></li>
 								<li><a href="?p=Contact">Επικοινωνία</a></li>
 								<li>
-									<a><i class="fa fa-bars"> Περισσότερα</i></a>
+									<i class="fa fa-bars" style="color:#c0c0c0">
+										Περισσότερα
+									</i>
 									<ul>
 										<!--<li><a href="?p=Videos">Βίντεο - Συνέντευξεις</a></li>-->
 										<li><a href="?p=howTo">Οδηγός Πληρωμής</a></li>
@@ -69,7 +74,7 @@
 			-->
 
 			<!-- Internal Pages -->
-			<main role="main" style="margin-top:5%;margin-left:10%;margin-right:10%;width:95%;font-family:Calibri;font-size:large" class="col-md-9 col-lg-10 px-4" id="main">
+			<main role="main" style="margin-top:2%;margin-left:10%;margin-right:10%;width:95%;font-family:Calibri;font-size:large;display:inline-block;" class="col-md-9 col-lg-10 px-4" id="main">
 	    	<section class="row text-center placeholders">
 	      	<?php
 						if( ! isset($_REQUEST['p'])) {
