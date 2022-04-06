@@ -1,0 +1,35 @@
+{
+  "short_name": "Niose Kala",
+  "name": "Niose Kala - Σύμβουλος ψυχικής υγείας",
+  "start_url": "/?source=pwa",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "type": "image/png",
+      "sizes": "388x132"
+    },
+    { "src": "/images/maskable_icon_x192.png",
+      "type": "image/png",
+      "sizes": "192x192" }
+  ],
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3367D6",
+  "shortcuts": [
+    {
+      "name": "Διαθέσιμες Υπηρεσίες",
+      "description": "Δείτε τις διαθέσιμες υπηρεσίες και κλείστε ραντεβού",
+      "url": "/??p=Services&source=pwa",
+      "icons": [{ "src": "/images/maskable_icon_x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Πως να κλείσετε ραντεβού - Οδηγός Πληρωμής",
+      "short_name": "Οδηγός Πληρωμής",
+      "description": "Δείτε πως μπορείτε να κλείσετε ραντεβού και να πληρώσετε μέσα από την σελίδα μας.",
+      "url": "/?p=howTo&source=pwa",
+      "icons": [{ "src": "/images/maskable_icon_x192.png", "sizes": "192x192" }]
+    }
+  ],
+  "description": "Νιώσε Καλά! Σύμβουλος ψυχικής υγείας Σταυρούλα Καροφυλλάκη. Δεν είσαι μονός/η υπάρχει τρόπος να ΝΙΩΣΕΙΣ ΚΑΛΑ. Διαθέσιμες και online συνεδρίες μέσω Skype, Viber, Τηλεφώνου."
+}

@@ -2,15 +2,15 @@
 <!doctype html>
 <html lang="en">
 <?php
-	
-	include_once "../database/dbconnect.php";	
+
+	include_once "../database/dbconnect.php";
 	$database = new Database();
 	$db = $database->getConnection();
 	$_SESSION['dbconnect'] = $db;
-	
+
 	if(!isset($_SESSION['admin'])){
 		$_SESSION['admin'] = '?';
-	}		
+	}
 ?>
 	<head>
 		<meta charset="utf-8" />
@@ -18,15 +18,15 @@
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<link rel="stylesheet" href="../assets/css/_custom-forms.scss" />
 		<script src="https://kit.fontawesome.com/ec3f31a4cb.js" crossorigin="anonymous"></script>
-		
+
 		<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/checkout/">
 
 	    <!-- Bootstrap core CSS -->
 	    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	
+
 	    <!-- Custom styles for this template -->
 		<link href="https://getbootstrap.com/docs/4.0/examples/checkout/form-validation.css" rel="stylesheet">
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<style type="text/css">
 			tr:nth-child(even) {background: #CCC}
 			tr:nth-child(odd) {background: #FFF}
@@ -66,7 +66,7 @@
 							</ul>
 						</li>
 						<li>
-						<?php 
+						<?php
 							if($_SESSION['admin'] == 'ok'){
 								print '<a href="?p=logout">Logout</a>';
 							}else{
@@ -77,11 +77,11 @@
 					</ul>
 				</nav>
 			</div>
-			
+
 			<!-- Internal Pages -->
 			<main role="main" style="padding-top:5%;margin-right:10%;margin-left:10%" class="col-md-9 col-lg-10 px-4" id="main">
 	          	<section class="row text-center placeholders">
-	           		<?php	
+	           		<?php
 						if( !isset($_REQUEST['p']) && $_SESSION['admin'] == 'ok' ){
 							$_REQUEST['p']='start';
 						}else if(!isset($_REQUEST['p']) && $_SESSION['admin'] != 'ok' ){
@@ -137,14 +137,14 @@
 															break;
 								case "UpdateSettings" :		require "settings/UpdateSettings.php";
 															break;
-								
+
 							}
 						}
 					?>
 				</section>
 			</main>
   		</div>
-  		
+
 			<!-- Scripts -->
 		<!--<script src="../assets/js/jquery.min.js"></script>-->
 		<script src="../assets/js/jquery.dropotron.min.js"></script>
