@@ -3,7 +3,7 @@
 	$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 	if($slittedURI[1]=="_aDemo"){
 		define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-		define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+		define('GPWD', 'nfnhlfytlcgaybvr'); // GMail password
 	}else{
 		define('GUSER','niosekala@gmail.com'); // niose kala gmail email
 		define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
@@ -18,6 +18,30 @@
 	$startTime = $datum->format('Y-m-d H:i:s');
 
 	if(isset($_POST['contact'])){
+		if(isset($_POST['g-recaptcha-response']))
+		{
+			$secretKey ="6Le84G4iAAAAALeho4XJWVtttPWuXVW-WNrxFKc4";
+	    $createGoogleUrl = 'https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response'];
+			$verifyRecaptcha = curlRequest($createGoogleUrl);
+			$decodeGoogleResponse = json_decode($verifyRecaptcha,true);
+
+	    if($decodeGoogleResponse['success'] != 1)
+			{
+				Logger::warn('Recaptcha validation failed. Reason: '.implode(",", $decodeGoogleResponse['error-codes']));
+				print("<br>Recaptcha validation failed. Please try again!<br>");
+				print<<<END
+					<script>
+						setTimeout(function(){
+							window.location.href = "?p=Contact"
+						}, 10 * 1000);
+					</script>
+END;
+				return;
+      } else {
+      	Logger::info('Recaptcha validation succeed.');
+      }
+    }
+
 		$message .= '<body><divstyle="text-align:left"><br><h3>Στοιχεία Πελάτη: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Όνομα: '.$_POST['name'].'<br>';
 		$message .= 'Email: '.$_POST['email'].'<br></div>';
@@ -61,6 +85,22 @@
 		} else {
 			return true;
 		}
+	}
+
+	function curlRequest($url)
+	{
+	    $ch = curl_init();
+	    $getUrl = $url;
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	    curl_setopt($ch, CURLOPT_URL, $getUrl);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+
+	    $response = curl_exec($ch);
+
+			curl_close($ch);
+	    return $response;
 	}
 
 ?>

@@ -8,6 +8,8 @@
 	$db = $database->getConnection();
 	$_SESSION['dbconnect'] = $db;
 
+	include_once "../logger/Logger.php";
+
 	if(!isset($_SESSION['admin'])){
 		$_SESSION['admin'] = '?';
 	}

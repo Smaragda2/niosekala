@@ -279,8 +279,10 @@
 					var email = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$");
 					var message = new RegExp("^[a-zA-Zα-ωΑ-Ω].{5,}");
 
+					var recaptcha = grecaptcha.getResponse().length > 0;
 
-					if( name.test($("#contactName").val()) && email.test($("#contactEmail").val()) && message.test($("#contactMessage").val())){
+					if( name.test($("#contactName").val()) && email.test($("#contactEmail").val())
+							&& message.test($("#contactMessage").val()) && recaptcha){
 				        allRequired = true;
 					}else{
 				        allRequired = false;
@@ -306,7 +308,6 @@
 			cookieconsent.run({"notice_banner_type":"headline","consent_type":"implied","palette":"dark","language":"el","website_name":"Niose Kala"});
 			});
 			</script>
-
 			<noscript>Cookie Consent by <a href="https://www.TermsFeed.com/">TermsFeed Generator</a></noscript>
 			<!-- End Cookie Consent -->
 

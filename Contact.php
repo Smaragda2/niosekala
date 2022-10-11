@@ -17,7 +17,7 @@
 	<div class="jumbotron col col-12-narrower " align="center" style="background-color:#FFCCCC;text-align:center;margin-right:7%;width:100%">
 		<h3 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;text-align:center">Στείλτε Μήνυμα</h3>
 		<br>
-		<form action="?p=Request" method="POST" enctype="multipart/form-data" id="contact" class="needs-validation was-validated" novalidate>	
+		<form action="?p=Request" method="POST" enctype="multipart/form-data" id="contact" class="needs-validation was-validated" novalidate>
 			<div class="row" style="width:95%">
 				<div class="col-md-6 mb-6">
 					<input class="form-control" type="text" name="name" id="contactName" placeholder="Όνομα"  onkeyup="CheckRequiredContact();">
@@ -35,8 +35,9 @@
 			</div>
 			<br>
 			<input type="submit" id="contactSubmit" name="contact"  value="Αποστολή Μηνύματος" style="background-color:gray" disabled>
+			<div class="g-recaptcha" id="recaptcha" data-sitekey="6Le84G4iAAAAAPNszxOlasVpLZlkUnCVosK6GSIT" data-callback="CheckRequiredContact" expired-callback="CheckRequiredContact"></div>
 		</form>
 	</div>
 </div>
 
-
+<script src="https://www.google.com/recaptcha/api.js"></script>

@@ -15,7 +15,7 @@
 		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 		if($slittedURI[1]=="_aDemo"){
 			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+			define('GPWD', 'nfnhlfytlcgaybvr'); // GMail password
 		}else{
 			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
 			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass

@@ -2,17 +2,18 @@
 
 // ----------------------------------------- Confirm Appontment -------------------------------------------
 	if(isset($_POST['confirmAppointment'])){
-		$email = $_POST['email'];	
+		$email = $_POST['email'];
 		$onDate  = $_POST['onDate'];
 		$atTime  = $_POST['atTime'];
 		$createdAt = $_POST['createdAt'];
-		
+
+		$hour = $onDate.' '.$atTime;
+
 		$send = false;
-		
 		$token = $_POST['token'];
-		
+
 	 	$mysqli = $_SESSION['dbconnect'];
-	 	
+
 		$updateConfirm = 'UPDATE Request SET isConfirmed=true WHERE paymentToken="'.$token.'"';
 		$stmt = $mysqli->prepare($updateConfirm);
 		$status = $stmt->execute();
@@ -24,8 +25,6 @@
 		if($send){
 			if(!$mail = smtpmailer($email,$hour)) {
 				print "<br>".'<span style="color:red">'."Fail to send email.<br> Please try again!<hr> </p><br>";
-				//echo "<script>setTimeout();</script>";
-		
 			}else{
 				print "<br>".'<span style="color:green">'."Το ραντεβού επιβεβαιώθηκε με επιτυχεία. </p><br>";
 				print<<<END
@@ -44,17 +43,17 @@ END;
 // --------------------------------------------- Appointment Completed ------------------------------------------------------
 	if(isset($_POST['completeAppointment'])){
 	 	$mysqli = $_SESSION['dbconnect'];
-		
+
 		$email = $_POST['email'];
 		$onDate  = $_POST['onDate'];
 		$atTime  = $_POST['atTime'];
 		$createdAt = $_POST['createdAt'];
 		$token = $_POST['token'];
-				
+
 		$updateConfirm = 'UPDATE Request SET isCompleted=true WHERE paymentToken = "'.$token.'"';
-		
+
 		$stmt = $mysqli->prepare($updateConfirm);
-		
+
 		if($stmt->execute()){
 			print "<br>".'<span style="color:green">'."Το ραντεβού ενημερώθηκε με επιτυχεία. </span><br>";
 			print<<<END
@@ -68,17 +67,17 @@ END;
 			print "<br>".'<span style="color:red">'."Something went wrong.<br> Please try again!<hr> </p><br>";
 		}
 	}
-	
+
 	if(isset($_POST['completeAnonymous'])){
 	 	$mysqli = $_SESSION['dbconnect'];
-		
+
 		$tel = $_POST['tel'];
 		$createdAt = $_POST['createdAt'];
-		
+
 		$updateConfirm = 'UPDATE RequestAnonymous SET isCompleted=true WHERE tel = "'.$tel.'" and createdAt = "'.$createdAt.'"';
 
 		$stmt = $mysqli->prepare($updateConfirm);
-		
+
 		if($stmt->execute()){
 			print "<br>".'<span style="color:green">'."Το ραντεβού ενημερώθηκε με επιτυχεία. </span><br>";
 			print<<<END
@@ -92,7 +91,7 @@ END;
 			print "<br>".'<span style="color:red">'."Something went wrong.<br> Please try again!<hr> </p><br>";
 		}
 	}
-	
+
 // --------------------------------------------- Change Appointment ------------------------------------------------------
 
 	if(isset($_POST['changeHour'])){
@@ -108,20 +107,20 @@ END;
 
 		$date = $newDate.' '.$newTime;
 		$hours = $onDate.' '.$atTime;
-		
+
 		$send = true;
-						
+
 		$formattedNewDate = date('Y-m-d',strtotime($newDate));
 		$formattedOnDate = date('Y-m-d',strtotime($onDate));
-		
+
 		$updateConfirm = 'UPDATE Request SET onDate="'.$formattedNewDate.'",atTime = "'.$newTime.'", isConfirmed=true WHERE paymentToken="'.$token.'"';
 		$updateBooked = 'UPDATE Booked SET onDate="'.$formattedNewDate.'",atTime = "'.$newTime.'" WHERE onDate="'.$formattedOnDate.'" AND atTime="'.$atTime.'"';
-		
+
 		$stmt = $mysqli->prepare($updateConfirm);
 		$stmt2 = $mysqli->prepare($updateBooked);
 		if($send){
 			if($stmt->execute() && $stmt2->execute()){
-				
+
 				if(!$mail = smtpmailerChange($email,$hours,$date)) {
 					print "<br>".'<span style="color:red">'."Fail to send email.<br> Please try again!<br><hr><br>";
 					print "<br> <b>*Σημείωση:</b> Η ημερομηνία & ώρα του ραντεβού έχει αλλάξει, όμως το email ενημέρωσης ΔΕΝ μπόρεσε να σταλθεί στον πελάτη.<br> To ραντεβού πλέον βρίσκετε στην σελίδα <a href='?p=confirmAppointment'> Όλα τα επιβεβαιωμένα ραντεβού </a><br>";
@@ -156,39 +155,39 @@ END;
 		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 		if($slittedURI[1]=="_aDemo"){
 			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+			define('GPWD', 'nfnhlfytlcgaybvr'); // GMail password
 		}else{
 			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
 			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
 		}
 
-		
+
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
 		$message .= '<body><divstyle="text-align:left"><h2>Αλλαγή Ημερομηνίας Ραντεβού:</h2><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Η ημερομηνία και ώρα του ραντεβού σας, για τις '.$hour.', άλλαξε.<br>';
 		$message .= 'Η <b><i>Νέα</i></b> Ημ/νια & Ώρα του Ραντεβού ειναι: <b>'.$date.'</b><br></div>';
 		$message .= '<br><h3>*Η ημερομηνία και ώρα του ραντεβού σας έχουν επιβεβαιωθεί.</h3><br></body>';
-		
+
 		require_once('mailer/class.phpmailer.php');
-		
+
 		global $error;
 		$mail = new PHPMailer();  // create a new object
-		$mail->CharSet="UTF-8";     
+		$mail->CharSet="UTF-8";
 		$mail->IsSMTP(); // enable SMTP
 		$mail->SMTPDebug = 0;  // debugging: 1 = errors and messages, 2 = messages only
 		$mail->SMTPAuth = true;  // authentication enabled
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
-		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
+		$mail->Port = 465;
+		$mail->Username = GUSER;
+		$mail->Password = GPWD;
 		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = "Niose Kala - Η Ημερομηνία του Ραντεβού σας άλλαξε";
 		$mail->MsgHTML($message);
 		$mail->AddAddress($email);
 		$mail->AddBCC(GUSER);
 		if(!$mail->Send()) {
-			$error = 'Mail error: '.$mail->ErrorInfo; 
+			$error = 'Mail error: '.$mail->ErrorInfo;
 			print_r($error);
 			return false;
 		} else {
@@ -201,79 +200,79 @@ END;
 		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 		if($slittedURI[1]=="_aDemo"){
 			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+			define('GPWD', 'nfnhlfytlcgaybvr'); // GMail password
 		}else{
 			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
 			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
 		}
-		
+
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
 		$message .= '<body><divstyle="text-align:left"><h2>Επιβεβαίωση Ραντεβού:</h2><br><hr><br>';
-		$message .= '<div class="row" style="text-align:left">Η ημερομηνία και ώρα του ραντεβού σας επιβεβαιώθηκε..<br>';
+		$message .= '<div class="row" style="text-align:left">Η ημερομηνία και ώρα του ραντεβού σας επιβεβαιώθηκε.<br>';
 		$message .= 'Ημ/νια & Ώρα Ραντεβού: '.$hour.'<br></div></body>';
-		
+
 		require_once('mailer/class.phpmailer.php');
-		
+
 		global $error;
 		$mail = new PHPMailer();  // create a new object
-		$mail->CharSet="UTF-8";     
+		$mail->CharSet="UTF-8";
 		$mail->IsSMTP(); // enable SMTP
 		$mail->SMTPDebug = 0;  // debugging: 1 = errors and messages, 2 = messages only
 		$mail->SMTPAuth = true;  // authentication enabled
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
-		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
+		$mail->Port = 465;
+		$mail->Username = GUSER;
+		$mail->Password = GPWD;
 		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = "Niose Kala - Επιβεβαίωση Ημ/νιας & Ώρας Ραντεβού";
 		$mail->MsgHTML($message);
 		$mail->AddAddress($email);
 		$mail->AddBCC(GUSER);
 		if(!$mail->Send()) {
-			$error = 'Mail error: '.$mail->ErrorInfo; 
+			$error = 'Mail error: '.$mail->ErrorInfo;
 			print_r($error);
 			return false;
 		} else {
 			return true;
 		}
 	}
-	
+
 	function smtpmailer2($email,$hour) {
 		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 		if($slittedURI[1]=="_aDemo"){
 			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+			define('GPWD', 'nfnhlfytlcgaybvr'); // GMail password
 		}else{
 			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
 			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
 		}
-		
+
 		$message = 	'<head> <meta charset="utf-8" /> </head>';
 		$message .= '<body><divstyle="text-align:left"><h2>Το Ραντεβού σας για τις '.$hour.' Ακυρώθηκε.</h2><br><hr><br>';
 		$message .= '<h3>Για νέο ραντεβού επικοινωνήστε μαζί μας στο: 6900000000</h3><br>';
 		$message .= 'ή κλείστε ραντβού μέσω τις σελίδας μας: <a href="https://niosekala.gr">niosekala.gr</a><br><hr><br>';
-		
+
 		require_once('mailer/class.phpmailer.php');
-		
+
 		global $error;
 		$mail = new PHPMailer();  // create a new object
-		$mail->CharSet="UTF-8";     
+		$mail->CharSet="UTF-8";
 		$mail->IsSMTP(); // enable SMTP
 		$mail->SMTPDebug = 0;  // debugging: 1 = errors and messages, 2 = messages only
 		$mail->SMTPAuth = true;  // authentication enabled
 		$mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for GMail
 		$mail->Host = 'smtp.gmail.com';
-		$mail->Port = 465; 
-		$mail->Username = GUSER;  
-		$mail->Password = GPWD;           
+		$mail->Port = 465;
+		$mail->Username = GUSER;
+		$mail->Password = GPWD;
 		$mail->SetFrom(GUSER, 'Niose Kala');
 		$mail->Subject = "Niose Kala - Το Ραντεβού σας Ακυρώθηκε.";
 		$mail->MsgHTML($message);
 		$mail->AddAddress($email);
 		$mail->AddBCC(GUSER);
 		if(!$mail->Send()) {
-			$error = 'Mail error: '.$mail->ErrorInfo; 
+			$error = 'Mail error: '.$mail->ErrorInfo;
 			return false;
 		} else {
 			return true;
@@ -298,10 +297,10 @@ END;
 
 
 		$return = "";
-	    
+
 	    $price = $price*100;
 	    $productName = $name;
-	    
+
 		$data = array(
 			"tags"=>array( $token ),
 		    "PaymentTimeOut"=> 65535,
@@ -316,12 +315,12 @@ END;
 		   	"sourceCode"=>$sourceCode,
 		    "CustomerTrns"=> $productName,
 		    "disableIVR"=> true
-		);	
+		);
 		$headers = array(
 		    'Content-Type:application/json',
 		    'Authorization: Basic '.$encAuth // <---
 		);
-		
+
 		$ch = curl_init(host);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
@@ -329,12 +328,11 @@ END;
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		$return = curl_exec($ch);
 		curl_close($ch);
-		
+
 		$result =json_decode($return);
 		$orderCode = $result->OrderCode;
-		
+
 		return $refURL.$orderCode;
 
 	}
 ?>
-

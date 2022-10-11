@@ -60,8 +60,8 @@
 			$paymentStatus = $stmt3->execute();
 		}
 
-
 		if($send){
+
 			Logger::info('Appointment Info {Date and Time: '.$hour.', Customer Name: '.$_POST['fullName'].',
 												Customer Email: '.$_POST['email'].', Customer Phone: '.$_POST['tel'].', Selected Product: '.$_POST['name'].',
 												Price: '.$_POST['price'].', Appointment Notes: '.$notes.', Appoint through: '.$_POST['whereTo'].'}');
@@ -79,6 +79,7 @@
 			$message .= '<div class="row" style="text-align:left">Για την πληρωμή πατήστε το παρακάτω link:<br>';
 			$message .=  $url.'<br>';
 			$message .= '<hr><br><h3>Το Link θα σας μεταφέρει αμέσως στην σελίδα της Viva Wallet για την ολοκλήρωση της πληρωμής σας.</h3><br><hr><br>';
+
 			if(!$mail = smtpmailer($email,$subject,$message)) {
 				print "<br>".'<span style="color:red">'."Fail to send email.<br> Please try again!<hr> </p><br>";
 				//echo "<script>setTimeout();</script>";
@@ -99,10 +100,11 @@ END;
 	}
 
 	function smtpmailer($email,$subject,$message) {
+
 		$slittedURI = explode('/',$_SERVER['REQUEST_URI']);
 		if($slittedURI[1]=="_aDemo"){
 			define('GUSER', 'smaragdapink7@gmail.com'); // GMail username
-			define('GPWD', 'ltkfycfxpcudyhvu'); // GMail password
+			define('GPWD', 'nfnhlfytlcgaybvr'); // GMail password
 		}else{
 			define('GUSER','niosekala@gmail.com'); // niose kala gmail email
 			define('GPWD','xuvzpmmvboekurgj'); //niose kala gmail pass
