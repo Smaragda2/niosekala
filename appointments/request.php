@@ -27,7 +27,7 @@
 
 	    if($decodeGoogleResponse['success'] != 1)
 			{
-				Logger::warn('Recaptcha validation failed. Reason: '.implode(",", $decodeGoogleResponse['error-codes']));
+				Logger::warn('Recaptcha validation failed. Reason: '.implode(",", $decodeGoogleResponse['error-codes']).'. Customer Info {Name: '.$_POST['name'].', Email: '.$_POST['email'].', Message: '.$_POST['message'].'}');
 				print("<br>Recaptcha validation failed. Please try again!<br>");
 				print<<<END
 					<script>
@@ -40,7 +40,17 @@ END;
       } else {
       	Logger::info('Recaptcha validation succeed.');
       }
-    }
+    } else {
+			Logger::warn('Recaptcha validation is missing. Customer Info {Name: '.$_POST['name'].', Email: '.$_POST['email'].', Message: '.$_POST['message'].'}');
+			print("<br>Recaptcha validation is missing. Please try again!<br>");
+			return;
+		}
+
+		if(isHTML($_POST['message'])) {
+			Logger::warn("Message contains HTML characters. Message: ".$_POST['message']);
+			print("<br>Message cannot contain HTML characters. Please try again!<br>");
+			return;
+		}
 
 		$message .= '<body><divstyle="text-align:left"><br><h3>Στοιχεία Πελάτη: </h3><br><hr><br>';
 		$message .= '<div class="row" style="text-align:left">Όνομα: '.$_POST['name'].'<br>';
@@ -101,6 +111,14 @@ END;
 
 			curl_close($ch);
 	    return $response;
+	}
+
+	function isHTML($string){
+ 		if($string != strip_tags($string)) {
+			return true;
+ 		} else {
+			return false;
+ 		}
 	}
 
 ?>
