@@ -27,7 +27,7 @@
 
 	    if($decodeGoogleResponse['success'] != 1)
 			{
-				Logger::warn('Recaptcha validation failed. Reason: '.implode(",", $decodeGoogleResponse['error-codes']));
+				Logger::warn('Recaptcha validation failed. Reason: '.implode(",", $decodeGoogleResponse['error-codes']).'. Customer Info {Name: '.$_POST['name'].', Email: '.$_POST['email'].', Message: '.$_POST['message'].'}');
 				print("<br>Recaptcha validation failed. Please try again!<br>");
 				print<<<END
 					<script>
@@ -41,7 +41,7 @@ END;
       	Logger::info('Recaptcha validation succeed.');
       }
     } else {
-			Logger::warn("Recaptcha validation is missing");
+			Logger::warn('Recaptcha validation is missing. Customer Info {Name: '.$_POST['name'].', Email: '.$_POST['email'].', Message: '.$_POST['message'].'}');
 			print("<br>Recaptcha validation is missing. Please try again!<br>");
 			return;
 		}
