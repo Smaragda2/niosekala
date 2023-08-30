@@ -14,7 +14,7 @@
     print<<<END
     <p style="width: 100%;"><b>Τίτλος Άρθρου:</b> $articleTitle</p>
     <div class="jumbotron " style="width:100%;">
-      <div class="col">$smallDescription</div>
+      <div class="articleBody col">$smallDescription</div>
       <br>
       <form action="?p=Article" method="POST" enctype="multipart/form-data" class="needs-validation" style="width:100%" novalidate>
         <input type="hidden" id="id" name="id" value="$id"/>
