@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="width:100%;">
 <h2><b>Διαγραφή Άρθρων</b></h2>
 
 <?php
@@ -29,13 +29,13 @@
         <div class="row" style="width:95%">
           <div class="col">
             <label for="smallDescription">*Περιγραφή Άρθρου</label>
-            <textarea type="smallDescription" id="smallDescription" name="smallDescription" value="$smallDescription" rows="3" readonly">  </textarea>
+            <textarea type="smallDescription" id="smallDescription" name="smallDescription" value="$smallDescription" rows="3" readonly">$smallDescription</textarea>
           </div>
         </div>
         <div class="row" style="width:95%">
           <div class="col">
             <label for="body">*Κείμενο Άρθρου</label>
-            <textarea type="body" id="body" name="body" value="$body" rows="7" readonly>  </textarea>
+            <textarea type="body" id="body" name="body" value="$body" rows="7" readonly>$body</textarea>
           </div>
         </div>
 

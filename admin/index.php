@@ -62,17 +62,18 @@
 							</ul>
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-gear"> Ρυθμίσεις</i></a>
-							<ul>
-								<li><a href="?p=TimeslotSettings">Ημέρες και Ώρες Ραντεβού</a></li>
-							</ul>
-						</li>
-						<li>
 							<a href="#">Άρθρα</a>
 							<ul>
+								<li><a href="?p=Articles">Όλα τα Άρθρα</a></li>
 								<li><a href="?p=newArticle">Προσθήκη Νέου Άρθρου</a></li>
 								<li><hr></li>
 								<li><a href="?p=deleteArticle">Διαγραφή Άρθρου</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-gear"> Ρυθμίσεις</i></a>
+							<ul>
+								<li><a href="?p=TimeslotSettings">Ημέρες και Ώρες Ραντεβού</a></li>
 							</ul>
 						</li>
 						<li>

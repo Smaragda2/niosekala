@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="width:100%;">
 <h2><b>Όλα τα Άρθρα</b></h2>
 
 <?php
@@ -16,20 +16,20 @@
 		print<<<END
         <div class="row" style="width:95%">
           <div class="col">
-            <label for="title">*Τίτλος</label>
+            <label for="title">Τίτλος</label>
             <input type="text" id="title" name="title" value="$articleTitle" readonly/>
           </div>
         </div>
         <div class="row" style="width:95%">
           <div class="col">
-            <label for="smallDescription">*Περιγραφή Άρθρου</label>
-            <textarea type="smallDescription" id="smallDescription" name="smallDescription" value="$smallDescription" rows="3" readonly">  </textarea>
+            <label for="smallDescription">Περιγραφή Άρθρου</label>
+            <textarea type="smallDescription" id="smallDescription" name="smallDescription" rows="3" readonly">$smallDescription</textarea>
           </div>
         </div>
         <div class="row" style="width:95%">
           <div class="col">
-            <label for="body">*Κείμενο Άρθρου</label>
-            <textarea type="body" id="body" name="body" value="$body" rows="7" readonly>  </textarea>
+            <label for="body">Κείμενο Άρθρου</label>
+            <textarea type="body" id="body" name="body" rows="7" readonly>$body</textarea>
           </div>
         </div>
         <br>

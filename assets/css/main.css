@@ -184,6 +184,12 @@ select, textarea {
 		padding: 1em 0 1em 2em;
 	}
 
+/* Articles */
+	.articleBody {
+		white-space: pre-wrap;
+    text-align: left;
+	}
+
 /* Container */
 
 	.container {

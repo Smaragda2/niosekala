@@ -1,7 +1,7 @@
 <script>
 
 	function CheckRequired(){
-		var allEmpty = false;
+		var allFilled = false;
     var fieldExceedsMaxValue = false;
 
    var title = $("#title").val();
@@ -14,24 +14,27 @@
 
     var errorsMsg = "";
 
-		if(empty(title) && empty(description) && empty(body)){
-	        allEmpty = true;
+		if(title?.length == 0 || description?.length == 0 || body?.length == 0){
+	        allFilled = false;
 		}else{
-	        allEmpty = false;
+	        allFilled = true;
 		}
 
 
-    if (strlen(title) > titleMaxChars) {
+    if (title?.length > titleMaxChars) {
       errorsMsg = "Ο Τίτλος δεν μπορεί να ξεπερνάει τους " + titleMaxChars + " χαρακτήρες!\n";
+      fieldExceedsMaxValue = true;
     }
-    if (strlen(description) > descriptionMaxChars) {
+    if (description?.length > descriptionMaxChars) {
       errorsMsg += "Η Περιγραφή δεν μπορεί να ξεπερνάει τους " + descriptionMaxChars + " χαρακτήρες!\n";
+      fieldExceedsMaxValue = true;
     }
-    if (strlen(body) > bodyMaxChars) {
+    if (body?.length > bodyMaxChars) {
       errorsMsg += "Ο Κείμενο του Άρθρου δεν μπορεί να ξεπερνάει τους " + bodyMaxChars + " χαρακτήρες!\n";
+      fieldExceedsMaxValue = true;
     }
 
-		if(allEmpty){
+		if(!allFilled){
 			document.getElementById("errors").innerText = "Παρακαλώ συμπληρώστε όλα τα πεδία με αστερίσκο (*).";
 			$("#addSubmit").attr('disabled', true);
 			$("#addSubmit").attr('style','background-color:gray');
@@ -48,8 +51,9 @@
 
 </script>
 
-<div class="container">
+<div class="container" style="width:100%;">
   <h2><b>Προσθήκη Άρθρου</b></h2>
+  <h4 style="color: red;"><b>*Τα Emojis δεν υποστηρίζονται!</b></h4>
   <?php
   		print<<<END
   			<form action="?p=handleArticles" method="POST" enctype="multipart/form-data" class="needs-validation" style="width:100%" onload="CheckRequired();" novalidate>
@@ -62,13 +66,13 @@
           <div class="row" style="width:95%">
             <div class="col">
               <label for="smallDescription">*Περιγραφή Άρθρου</label>
-              <textarea type="smallDescription" id="smallDescription" name="smallDescription" value="Τι θα δει ο χρήστης πριν ανοίξει το Άρθρο" rows="3" onkeyup="CheckRequired();">  </textarea>
+              <textarea type="smallDescription" id="smallDescription" name="smallDescription" value="Τι θα δει ο χρήστης πριν ανοίξει το Άρθρο" rows="3" onkeyup="CheckRequired();"></textarea>
             </div>
           </div>
           <div class="row" style="width:95%">
             <div class="col">
               <label for="body">*Κείμενο Άρθρου</label>
-              <textarea type="body" id="body" name="body" value="Το κείμενο του άρθρου" rows="7" onkeyup="CheckRequired();">  </textarea>
+              <textarea type="body" id="body" name="body" value="Το κείμενο του άρθρου" rows="7" onkeyup="CheckRequired();"></textarea>
             </div>
           </div>
 
