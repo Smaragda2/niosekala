@@ -9,7 +9,7 @@
    var body = $("#body").val();
 
    var titleMaxChars = 150;
-   var descriptionMaxChars = 150;
+   var descriptionMaxChars = 255;
    var bodyMaxChars = 65535;
 
     var errorsMsg = "";
