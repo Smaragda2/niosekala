@@ -22,5 +22,13 @@
   </div>
 END;
   }
+
+  if ($result->num_rows == 0) {
+    print<<<END
+    <div class="jumbotron row" style="width:100%;">
+      <p>Δεν βρέθηκε κάποιο Άρθρο.</p>
+    </div>
+  END;
+  }
 ?>
 </div>
