@@ -68,6 +68,14 @@
 							</ul>
 						</li>
 						<li>
+							<a href="#">Άρθρα</a>
+							<ul>
+								<li><a href="?p=newArticle">Προσθήκη Νέου Άρθρου</a></li>
+								<li><hr></li>
+								<li><a href="?p=deleteArticle">Διαγραφή Άρθρου</a></li>
+							</ul>
+						</li>
+						<li>
 						<?php
 							if($_SESSION['admin'] == 'ok'){
 								print '<a href="?p=logout">Logout</a>';
@@ -139,7 +147,14 @@
 															break;
 								case "UpdateSettings" :		require "settings/UpdateSettings.php";
 															break;
-
+								case "newArticle" :	require "articles/newArticle.php";
+															break;
+								case "deleteArticle" :	require "articles/deleteArticle.php";
+															break;
+								case "Articles" :	require "articles/allArticles.php";
+															break;
+								case "handleArticles" :	require "articles/handleArticles.php";
+															break;
 							}
 						}
 					?>

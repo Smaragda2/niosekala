@@ -4,6 +4,9 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+
+<!-- VERSION 1.2.2 -->
+
 <html>
 <?php
 	include_once "database/dbconnect.php";
@@ -52,6 +55,7 @@
 								<li style="white-space: nowrap;display: inline;text-align:center;line-height: 100px;"><img loading="lazy" alt="Logo Image. Σύμβουλος ψυχικής υγείας Καροφυλλάκη Σταυρούλα" src="images/logo.webp" height="100px" width="300px" style="float: left;"></li>
 								<li><a href="?p=start">Αρχική</a></li>
 								<li><a href="?p=Services">Υπηρεσίες</a></li>
+								<li><a href="?p=Articles">Άρθρα</a></li>
 								<li><a href="?p=whyOnline">Γιατί Online?</a></li>
 								<li><a href="?p=Biography">Βιογραφικό</a></li>
 								<li><a href="?p=Contact">Επικοινωνία</a></li>
@@ -112,6 +116,10 @@
 							case "Confirm" :			require "appointments/Confirm.php";
 														break;
 							case "Videos" :				require "videos.php";
+														break;
+							case "Articles":			require "articles/articles.php";
+														break;
+							case "Article":				require "articles/article.php";
 														break;
 						}
 					?>
