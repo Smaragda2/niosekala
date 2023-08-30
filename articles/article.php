@@ -12,7 +12,7 @@
 	$articleTitle = $row['title'];
 	$body = $row['body'];
 ?>
-<div class="Container">
+<div class="Container" style="width:100%;">
   <div class="jumbotron row" style="width:100%;">
     <p class="articlesTitle"><?php $articleTitle ?></p>
     <p class="articleBody"><?php $body ?></p>

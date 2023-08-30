@@ -1,4 +1,4 @@
-<div class="Container">
+<div class="Container" style="width:100%;">
 <?php
  	$mysqli = $_SESSION['dbconnect'];
  	$getArticles = "SELECT * FROM Article where isDeleted=false";
