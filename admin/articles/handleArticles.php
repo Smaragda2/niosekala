@@ -27,9 +27,8 @@ END;
 	if(isset($_POST['deleteSubmit'])){
 		$id = $_POST['id'];
 
-		$deleteArticle = "Update Product set isDeleted=true where id = ?";
-		$stmt = $mysqli->prepare($deleteArticle );
-		$stmt->bind_param('i', $id);
+		$deleteArticle = "Update Article set isDeleted=true where id = ".$id;
+		$stmt = $mysqli->prepare($deleteArticle);
 		$status = $stmt->execute();
 
 		if($status === false) {
